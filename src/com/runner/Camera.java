@@ -3,6 +3,7 @@ package com.runner;
 public class Camera {
     private double xcoor;
     private double ycoor;
+    private double vx;
 
     public Camera(Integer xcoor, Integer ycoor) throws Exception{
 //        if( xcoor<0 || xcoor>600 || ycoor<0 || ycoor>400) {
@@ -11,7 +12,18 @@ public class Camera {
 //        else{
             this.xcoor = xcoor;
             this.ycoor = ycoor;
+            this.vx = 0;
 //        }
+    }
+
+    public double calculateV(double vinit,double xcoor, double xhero, double dt, double k, double m, double f){
+        double ax = (k/m)*(xhero-xcoor)-(f/m)*vinit;
+        double vxnext = ax*dt + vinit;
+        return(vxnext);
+    }
+    public double calculateX(double vx, double xcoor, double dt){
+        double xnext = vx*dt + xcoor;
+        return(xnext);
     }
 
     @Override
@@ -30,7 +42,12 @@ public class Camera {
         return ycoor;
     }
 
-    public void update(long time){
+    public void update(double x, double xhero){
+        this.vx = calculateV(this.vx,x,xhero,0.16,1,1,0.8);
+        this.xcoor = calculateX(this.vx, x, 0.16);
+    }
 
+    public void setXcoor(double xcoor) {
+        this.xcoor = xcoor;
     }
 }
