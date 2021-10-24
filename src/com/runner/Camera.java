@@ -43,11 +43,8 @@ public class Camera {
     }
 
     public void update(double x, double xhero){
-        this.vx = calculateV(this.vx,x,xhero,0.16,1,1,0.8);
-        this.xcoor = calculateX(this.vx, x, 0.16);
+        this.vx = calculateV(this.vx,x,xhero,0.5,1,1,0.8);
+        this.xcoor = calculateX(this.vx, x, 0.5);
     }
 
-    public void setXcoor(double xcoor) {
-        this.xcoor = xcoor;
-    }
 }

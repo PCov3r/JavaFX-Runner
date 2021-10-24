@@ -11,14 +11,15 @@ public class GameScene extends Scene {
     private staticThing backgroundRight;
     private staticThing backgroundLeft;
     private Hero myhero;
+    Integer i = 0;
 
     public GameScene(Parent parent, double v, double v1, boolean b, Integer camx, Integer camy) {
         super(parent, v, v1, b);
         try {
             this.cam = new Camera(camx, camy);
-            backgroundRight = new staticThing(0, 0, 800, 400, +800 - (cam.getXcoor())%800, 0 + (cam.getYcoor())%400,"D:\\Documents\\Java projects\\Runner\\src\\desert.png");
-            backgroundLeft = new staticThing(0, 0, 800, 400, 0 - (cam.getXcoor())%800, 0 + (cam.getYcoor())%400, "D:\\Documents\\Java projects\\Runner\\src\\desert.png");
-            myhero = new Hero(200, 250, 0, 0,100,5,84,100,90);
+            backgroundRight = new staticThing(0, 0, 800, 400, -400 - (cam.getXcoor())%800, 0 + (cam.getYcoor())%400,"D:\\Documents\\Java projects\\Runner\\src\\desert.png");
+            backgroundLeft = new staticThing(0, 0, 800, 400, 400 - (cam.getXcoor())%800, 0 + (cam.getYcoor())%400, "D:\\Documents\\Java projects\\Runner\\src\\desert.png");
+            myhero = new Hero(300, 250, 0, 0,100,5,84,100,90);
             timer.start();
         } catch (Exception e) {
             System.out.println(e);
@@ -41,13 +42,25 @@ public class GameScene extends Scene {
         return cam;
     }
 
+    public void listenKeys(){
+        setOnKeyPressed( (event)->{
+            switch(event.getCode()) {
+                case SPACE -> {
+                    System.out.println("Jump");
+                    getMyhero().jump();
+                }
+            }
+        });
+    }
+
     public void render(){
         backgroundRight.getImgview().setX(+800 - (cam.getXcoor())%800);
         backgroundRight.getImgview().setY(0 + (cam.getYcoor())%400);
         backgroundLeft.getImgview().setX(-cam.getXcoor()%800);
         backgroundLeft.getImgview().setY(0 + (cam.getYcoor())%400);
-        myhero.getImgview().setX(myhero.getXcoor()-cam.getXcoor()+100);
+        //myhero.setCoor(myhero.getXcoor(),myhero.getImgview().getY());
         }
+
 
     AnimationTimer timer = new AnimationTimer() {
         private long lastUpdate = 0 ;

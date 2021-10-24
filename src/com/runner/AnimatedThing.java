@@ -31,15 +31,56 @@ public class AnimatedThing {
         return img;
     }
 
+    public void setCoor(double x, double y){
+        this.x = x;
+        this.y = y;
+        this.img.setX(this.x);
+        this.img.setY(this.y);
+    }
+
     public double getXcoor() {
         return x;
     }
 
-    public void update(){
-        if(frameidx>maxidx) {
-            frameidx = 0;
+    public double getYcoor() {
+        return y;
+    }
+
+    public static double constrain(double val, float min, float max) {
+        return Math.max(min, Math.min(max, val));
+    }
+
+    public void jump(){
+        if(this.attitude == 0) {
+            this.attitude = 1;
         }
-        this.img.setViewport(new Rectangle2D(this.offset*this.frameidx,this.attitude*this.offset,width,height));
-        frameidx++;
+    }
+
+    public void update(){
+        if(this.attitude == 0){
+            if(frameidx>maxidx) {
+                frameidx = 0;
+            }
+            this.img.setViewport(new Rectangle2D(this.offset*this.frameidx,this.attitude*this.offset,width,height));
+            frameidx++;
+        }
+        if(this.attitude == 1){
+            this.img.setViewport(new Rectangle2D(0,165,width,height));
+            this.y = this.y - 35;
+            if(this.y<100){
+                this.attitude = 2;
+            }
+            setCoor(this.x,this.y);
+        }
+        if(this.attitude == 2 && this.y<250){
+           this.img.setViewport(new Rectangle2D(1*this.offset,165,width,height));
+           this.y = (9.81/2)*10+this.y;
+           this.y = constrain(this.y, 0,250);
+            if(this.y>=250){
+                this.attitude = 0;
+            }
+           setCoor(this.x,this.y);
+        }
+
     };
 }
