@@ -4,8 +4,9 @@ public class Camera {
     private double xcoor;
     private double ycoor;
     private double vx;
+    private Hero h;
 
-    public Camera(Integer xcoor, Integer ycoor) throws Exception{
+    public Camera(Integer xcoor, Integer ycoor, Hero h) throws Exception{
 //        if( xcoor<0 || xcoor>600 || ycoor<0 || ycoor>400) {
 //            throw new Exception("Coordonnées non valides");
 //        }
@@ -13,6 +14,7 @@ public class Camera {
             this.xcoor = xcoor;
             this.ycoor = ycoor;
             this.vx = 0;
+            this.h = h;
 //        }
     }
 
@@ -42,9 +44,9 @@ public class Camera {
         return ycoor;
     }
 
-    public void update(double x, double xhero){
-        this.vx = calculateV(this.vx,x,xhero,0.5,1,1,0.8);
-        this.xcoor = calculateX(this.vx, x, 0.5);
+    public void update(){
+        this.vx = calculateV(this.vx,this.xcoor,h.getXcoor(),0.15,1,1,0.8);
+        this.xcoor = calculateX(this.vx, this.xcoor, 0.15);
     }
 
 }

@@ -23,7 +23,6 @@ public class Main extends Application{
         Group root = new Group();
         Pane pane = new Pane(root);
         GameScene scene = new GameScene(pane, 600, 400, true, 0, 0); //On définit la taille de la fenêtre de jeu et la position de la caméra
-        root.getChildren().addAll(scene.getBackground1().getImgview(),scene.getBackground2().getImgview(), scene.getMyhero().getImgview(), scene.getMyhero().getImgHearts()); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
         scene.listenKeys();
         primaryStage.setScene(scene);
         primaryStage.setResizable(true); //On définit la taille de fenêtre comme fixe

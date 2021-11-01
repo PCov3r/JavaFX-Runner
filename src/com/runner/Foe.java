@@ -1,0 +1,19 @@
+package com.runner;
+
+public class Foe extends AnimatedThing{
+    private boolean isAlive ;
+
+    public Foe(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer height, Integer width) {
+        super(x, y, 0,attitude, frameidx, period, maxidx, offset, 0,0,height, width, "D:\\Documents\\Java projects\\Runner\\src\\enemy.png");
+        getImgview().setScaleX(-1);
+        isAlive = true;
+    }
+
+    public boolean getAlive(){
+        return isAlive;
+    }
+
+    public void setAlive(boolean al){
+        isAlive = al;
+    }
+}
