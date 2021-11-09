@@ -89,16 +89,17 @@ public abstract class AnimatedThing {
             frameidx++;
         }
         if(this.attitude == 1){
-            if(this.y>120 && frameidx == 0){
+            if(this.y>90 && frameidx == 0){
                 this.y = this.y - 35;
             }
             else {
                 this.frameidx = 1;
                 this.y = (9.81/2)*10+this.y;
                 this.y = constrain(this.y, 0,250);
-                if(this.y>=250){
-                    this.attitude = 0;
+                if(this.y==250){
+                    this.y = 250;
                     this.frameidx = 0;
+                    this.attitude = 0;
                 }
             }
             this.img.setViewport(new Rectangle2D(this.offset*this.frameidx,this.attitude*120,width,height));
@@ -111,14 +112,14 @@ public abstract class AnimatedThing {
             frameidx++;
         }
         if(this.attitude == 3){
-            if(this.y>100 && frameidx == 0){
+            if(this.y>90 && frameidx == 0){
                 this.y = this.y - 35;
             }
             else {
                 this.frameidx = 1;
                 this.y = (9.81/2)*10+this.y;
                 this.y = constrain(this.y, 0,250);
-                if(this.y>=250){
+                if(this.y==250){
                     this.attitude = 0;
                     this.frameidx = 0;
                 }
@@ -126,5 +127,9 @@ public abstract class AnimatedThing {
             this.img.setViewport(new Rectangle2D(this.offset*this.frameidx,this.attitude*120,width,height));
         }
 
-    };
+    }
+
+    public double getIdx(){
+        return frameidx;
+    }
 }

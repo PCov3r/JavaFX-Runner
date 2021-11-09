@@ -12,7 +12,7 @@ public class Hero extends AnimatedThing {
     private ArrayList<FireBall> projectiles = new ArrayList<FireBall>();;
     private FireBall tempball;
     private boolean isInvincible = false;
-    private Integer numberofAmmo = 0;
+    private Integer numberofAmmo = 100;
 
     public Hero(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer height, Integer width) {
         super(x, y, 0,attitude, frameidx, period, maxidx, offset, 0,0,height, width, "D:\\Documents\\Java projects\\Runner\\src\\heros.png");
@@ -34,11 +34,13 @@ public class Hero extends AnimatedThing {
 
     public void shoot(Pane p, Camera cam){
         if(projectiles.size()>0) {
-            if (projectiles.get(projectiles.size() - 1).getXcoor() - getImgview().getX() > 100) {
+            if (projectiles.get(projectiles.size() - 1).getXcoor() - getXcoor() > 100) {
                 addProjectile(new FireBall(getXcoor()+50, getYcoor() , 0, 0, 100, 0, 0, 100, 200), p);
+                addAmmo(-1);
             }
         } else {
             addProjectile(new FireBall(getXcoor() +50, getYcoor() , 0, 0, 100, 0, 0, 100, 200), p);
+            addAmmo(-1);
         }
         if (getAttitude() == 0) {
             setAttitude(2);
@@ -55,7 +57,13 @@ public class Hero extends AnimatedThing {
                 removeProjectile(tempball);
                 p.getChildren().remove(tempball.getImgview());
                 if(projectiles.size() == 0){
-                    setAttitude(0);
+                    if(getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
+                        setAttitude(1);
+                    }else if(getAttitude() == 1){
+                        setAttitude(1);
+                    } else { //Sinon on revient à l'animation du héros qui court
+                        setAttitude(0);
+                    }
                 }
             }
             tempball.updateMov(30);
