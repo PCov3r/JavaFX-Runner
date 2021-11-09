@@ -66,7 +66,7 @@ public class Hero extends AnimatedThing {
                     }
                 }
             }
-            tempball.updateMov(30);
+            tempball.updateMov(40);
         }
     }
 

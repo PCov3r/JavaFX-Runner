@@ -6,17 +6,12 @@ public class Camera {
     private double vx, vy;
     private Hero h;
 
-    public Camera(Integer xcoor, Integer ycoor, Hero h) throws Exception{
-//        if( xcoor<0 || xcoor>600 || ycoor<0 || ycoor>400) {
-//            throw new Exception("Coordonnées non valides");
-//        }
-//        else{
+    public Camera(Integer xcoor, Integer ycoor, Hero h){
             this.xcoor = xcoor;
             this.ycoor = ycoor;
             this.vx = 0;
             this.vy = 0;
             this.h = h;
-//        }
     }
 
     public double calculateV(double vinit,double coor, double coorhero, double dt, double k, double m, double f){

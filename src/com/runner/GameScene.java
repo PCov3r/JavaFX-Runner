@@ -41,31 +41,25 @@ public class GameScene extends Scene {
         this.primaryStage = ps;
         this.loseScreen = ls;
         this.p = p;
-        try {
-            myhero = new Hero(400, 250, 0, 0,100,5,85,100,85);
-            this.cam = new Camera(camx, camy, myhero);
-            backgroundRight = new staticThing(0, 0, 800, 400, cam,"D:\\Documents\\Java projects\\Runner\\src\\desert.png");
-            backgroundLeft = new staticThing(0, 0, 800, 400, cam, "D:\\Documents\\Java projects\\Runner\\src\\desert.png");
-            this.ennemies = new ArrayList<Foe>();
-            ammo.setX(550);
-            ammo.setY(30);
-            ammo.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-            ammo.setText("0");
-            score.setX(250);
-            score.setY(30);
-            score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-            score.setText("Distance: 0m");
-
-            Image spriteSheet = new Image("D:\\Documents\\Java projects\\Runner\\src\\fireball.png",30, 30,true,false); //Chargement d'une nouvelle image
-            this.screenIcon = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
-            this.screenIcon.setViewport(new Rectangle2D(0,0,30,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
-            this.screenIcon.setX(510); //Coordonnées de l'endroit où l'image doit être affichée
-            this.screenIcon.setY(5);
-
-            p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, screenIcon); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        myhero = new Hero(400, 250, 0, 0,100,5,85,100,85);
+        this.cam = new Camera(camx, camy, myhero);
+        backgroundRight = new staticThing(0, 0, 800, 400, cam,"D:\\Documents\\Java projects\\Runner\\src\\desert.png");
+        backgroundLeft = new staticThing(0, 0, 800, 400, cam, "D:\\Documents\\Java projects\\Runner\\src\\desert.png");
+        this.ennemies = new ArrayList<Foe>();
+        ammo.setX(550);
+        ammo.setY(30);
+        ammo.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        ammo.setText("0");
+        score.setX(250);
+        score.setY(30);
+        score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        score.setText("Distance: 0m");
+        Image spriteSheet = new Image("D:\\Documents\\Java projects\\Runner\\src\\fireball.png",30, 30,true,false); //Chargement d'une nouvelle image
+        this.screenIcon = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
+        this.screenIcon.setViewport(new Rectangle2D(0,0,30,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
+        this.screenIcon.setX(510); //Coordonnées de l'endroit où l'image doit être affichée
+        this.screenIcon.setY(5);
+        p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, screenIcon); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
     }
 
     public void listenKeys(){
@@ -105,7 +99,6 @@ public class GameScene extends Scene {
         for(int i = 0; i<myhero.getProjectiles().size(); i++){
             fb = myhero.getProjectiles().get(i);
             fb.getImgview().setX(fb.getXcoor()-cam.getXcoor()+100);
-            System.out.println(fb.getXcoor());
         }
 
         for(int i = 0; i<ennemies.size(); i++){
@@ -158,68 +151,58 @@ public class GameScene extends Scene {
     public void updateEnnemies(){
         for(int i = 0; i<ennemies.size(); i++){
             f = ennemies.get(i);
+            checkCollisionHeroFoe(myhero, f);
+            if(myhero.getProjectiles().size()>0) {
+                checkCollisionFireballFoe(f, myhero.getProjectiles().get(0));
+            }
             f.updateAnim();
-            checkCollision(myhero,f,fb, bonus);
             if(f.getAlive() == false || f.getXcoor()-cam.getXcoor()<-100){
                 removeFoe(f);
+                System.out.println(ennemies.size());
             }
             f.updateMov(-20);
         }
     }
 
-    public void addItem(Pane p, Item i){
-        p.getChildren().add(i.getImgview());
+    public void checkCollisionHeroFoe(Hero h, Foe f) {
+        if (h.boundingBox(h.getXcoor() + 110, h.getYcoor(), 50, 70).intersects(f.boundingBox(f.getXcoor(), f.getYcoor(), 50, 70))) {
+            f.setAlive(false);
+            if (myhero.getIsInvincible() == false) {
+                h.setNumberOfLives(-1);
+                myhero.setIsInvincible(true);
+                invincibleDuration = 25;
+            }
+        }
     }
 
-    public void removeItem(Pane p, Item i){
-
-        p.getChildren().remove(i.getImgview());
-        i.getImgview().setImage(null);
+    public void checkCollisionFireballFoe(Foe f, FireBall fb) {
+        if (fb != null) {
+            if (fb.boundingBox(fb.getXcoor() + 110, fb.getYcoor(), 30, 30).intersects(f.boundingBox(f.getXcoor(), f.getYcoor(), 50, 70))) {
+                f.setAlive(false);
+                myhero.removeProjectile(fb);
+                p.getChildren().remove(fb.getImgview());
+                if (myhero.getProjectiles().size() == 0) {
+                    if (myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
+                        myhero.setAttitude(1);
+                    } else if (myhero.getAttitude() == 1) {
+                        myhero.setAttitude(1);
+                    } else { //Sinon on revient à l'animation du héros qui court
+                        myhero.setAttitude(0);
+                    }
+                }
+            }
+        }
     }
 
-    public void checkCollision(Hero h, Foe f, FireBall fb, Item i){
-       if (h.boundingBox(h.getXcoor()+110,h.getYcoor(),50,70).intersects(f.boundingBox(f.getXcoor(),f.getYcoor(),50,70))) {
-           f.setAlive(false);
-           if(myhero.getIsInvincible() == false) {
-               h.setNumberOfLives(-1);
-               myhero.setIsInvincible(true);
-               invincibleDuration = 25;
-           }
-       }
-       if(fb != null) {
-           if (fb.boundingBox(fb.getXcoor()+110,fb.getYcoor(),30, 30).intersects(f.boundingBox(f.getXcoor(),f.getYcoor(),50, 70))) {
-               f.setAlive(false);
-               myhero.removeProjectile(fb);
-               p.getChildren().remove(fb.getImgview());
-               if(myhero.getProjectiles().size() == 0){
-                   if(myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
-                       myhero.setAttitude(1);
-                   } else if(myhero.getAttitude() == 1){
-                       myhero.setAttitude(1);
-                   } else { //Sinon on revient à l'animation du héros qui court
-                       myhero.setAttitude(0);
-                   }
-               }
-           }
-       }
+    public void checkCollisionHeroBonus(Hero h, Item i) {
        if(i != null){
            if (h.boundingBox(h.getXcoor()+120,h.getYcoor(),30, 70).intersects(i.boundingBox(i.getXcoor(),i.getYcoor(),20, 20))) {
                h.addAmmo(+5);
-               removeItem(p,i);
+               i.remove(p);
                bonus = null;
            }
        }
     }
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
 
 /*    private AnimationTimer timer = new AnimationTimer() {
@@ -279,13 +262,14 @@ public class GameScene extends Scene {
                 createFoe();
             }
             if (now - lastUpdate >= 80_000_000) { //Sera éxécuté toutes les 80_000_000ns
-                if(myhero.getXcoor()>5000 && myhero.getXcoor()%5000 > 1 && myhero.getXcoor()%1000<20 && bonus == null){
+                if(myhero.getXcoor()>5000 && myhero.getXcoor()%5000 > 1 && myhero.getXcoor()%5000<20 && bonus == null){
                     double x = rnd.nextInt(400)+600;
                     bonus = new Item(x + myhero.getXcoor(),300,20,20,cam,"D:\\Documents\\Java projects\\Runner\\src\\shootBonus.png");
-                    addItem(p, bonus);
+                    bonus.add(p);
                 }
                 myhero.updateAnim();
                 myhero.updateMov(10);
+                checkCollisionHeroBonus(myhero,bonus);
                 cam.update();
                 myhero.updateLives();
                 if(myhero.getNumberOfLives() == 0){

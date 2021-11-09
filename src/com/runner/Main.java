@@ -32,9 +32,9 @@ public class Main extends Application{
         Pane pane = new Pane(root);
         Pane menupane = new Pane(root);
         Pane losepane = new Pane(root);
-        lose = new LosingScene(primaryStage, losepane, 600, 300, true);
-        game = new GameScene(primaryStage, lose, pane, 600, 300, true, 0, 0); //On définit la taille de la fenêtre de jeu et la position de la caméra
-        menu = new MenuScene(primaryStage,menupane,game, 600, 300, true);
+        lose = new LosingScene(primaryStage, losepane, 600, 400, true);
+        game = new GameScene(primaryStage, lose, pane, 600, 400, true, 0, 0); //On définit la taille de la fenêtre de jeu et la position de la caméra
+        menu = new MenuScene(primaryStage,menupane,game, 600, 400, true);
         primaryStage.setScene(menu);
         primaryStage.setResizable(true); //On définit la taille de fenêtre comme fixe
         primaryStage.show();

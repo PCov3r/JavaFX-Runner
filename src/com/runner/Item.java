@@ -35,4 +35,14 @@ public class Item{
         return imgview;
     }
 
+    public void add(Pane p){
+        p.getChildren().add(imgview);
+    }
+
+    public void remove(Pane p){
+
+        p.getChildren().remove(imgview);
+        imgview.setImage(null);
+    }
+
 }
