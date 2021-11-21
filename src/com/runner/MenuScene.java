@@ -1,6 +1,7 @@
 
 package com.runner;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,33 +20,39 @@ import javafx.scene.text.Text;
 public class MenuScene extends Scene {
     private Pane p;
     private VBox box;
+    private Hero myhero;
 
     public MenuScene(Stage primaryStage, Pane p, GameScene game, double v, double v1, boolean b) {
         super(p, v, v1, b);
         this.p = p;
-        Image back = new Image("D:\\Documents\\Java projects\\Runner\\src\\menuback.jpg",v, v1,false,true);
+        Image back = new Image(".\\menuback.jpg",v, v1,false,true);
         ImageView background = new ImageView(back);
+
+        myhero = new Hero(300, 100, 0, 0,100_000_000,6,85,100,85);
+        myhero.getImgview().setPreserveRatio(true);
+        myhero.getImgview().setFitHeight(250);
+
         Text title = new Text(50,90,"JavaFX Runner");
         title.setFill(Color.SNOW);
         title.setStroke(Color.BLACK);
         title.setFont(Font.font ("Impact", 60));
 
-        Rectangle backBox = new Rectangle(80, 100);
+        Rectangle backBox = new Rectangle(150, 100);
         backBox.setFill(Color.WHITESMOKE);
         backBox.setOpacity(0.5);
-        backBox.setX(30);
-        backBox.setY(130);
+        backBox.setX(50);
+        backBox.setY(150);
 
-        Button playBtn = new Button("Play");
+        Button playBtn = new Button("Jouer");
         playBtn.setMinWidth(150);
         playBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
         playBtn.setOnAction(e -> {
             primaryStage.setScene(game);
             game.listenKeys();
-            game.getTimer().start();
+            game.Start();
         });
 
-        Button quitBtn = new Button("Quit");
+        Button quitBtn = new Button("Quitter");
         quitBtn.setMinWidth(150);
         quitBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
         quitBtn.setOnAction(e -> {
@@ -59,11 +66,30 @@ public class MenuScene extends Scene {
         });
 
         box = new VBox(5);
-        box.setTranslateX(50);
-        box.setTranslateY(150);
+        box.setTranslateX(70);
+        box.setTranslateY(170);
         box.getChildren().addAll(playBtn,quitBtn);
 
-        p.getChildren().addAll( background,title, backBox, box);
+        p.getChildren().addAll( background,myhero.getImgview(),title, backBox, box);
+        timerAnim.start();
     }
+
+    public void render() {
+        myhero.getImgview().setX(myhero.getXcoor());
+        myhero.getImgview().setY(myhero.getYcoor());
+    }
+
+
+    private AnimationTimer timerAnim = new AnimationTimer() {
+        private long lastUpdate = 0 ;
+        private long lastfoeGen = 0;
+
+        @Override
+        public void handle(long now) {
+                myhero.updateAnim(now);
+                render();
+                lastUpdate = now ;
+            }
+    };
 }
 

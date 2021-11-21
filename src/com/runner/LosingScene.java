@@ -15,19 +15,28 @@ public class LosingScene extends Scene {
     private Pane p;
     private VBox box;
     Stage primaryStage;
+    GameScene gameScene;
 
-    public LosingScene(Stage primaryStage, Pane p, double v, double v1, boolean b) {
+    public LosingScene(GameScene gms, Stage primaryStage, Pane p, double v, double v1, boolean b) {
         super(p, v, v1, b);
         this.p = p;
         this.primaryStage = primaryStage;
-        Image back = new Image("D:\\Documents\\Java projects\\Runner\\src\\menuback.jpg",v, v1,false,true);
+        this.gameScene = gms;
+        Image back = new Image(".\\menuback.jpg",v, v1,false,true);
         ImageView background = new ImageView(back);
 
         Rectangle lineTop = new Rectangle(100, 2);
         lineTop.setX(10);
         lineTop.setY(50);
 
-        Button quitBtn = new Button("Quit");
+
+        Button reloadBtn = new Button("Rejouer");
+        reloadBtn.setOnAction(e -> {
+            gameScene.reload();
+            primaryStage.setScene(gameScene);
+        });
+
+        Button quitBtn = new Button("Quitter");
         quitBtn.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Ce n'est qu'un au revoir");
@@ -45,8 +54,12 @@ public class LosingScene extends Scene {
         box = new VBox(5);
         box.setTranslateX(25);
         box.setTranslateY(75);
-        box.getChildren().addAll(quitBtn);
+        box.getChildren().addAll(quitBtn, reloadBtn);
 
         p.getChildren().addAll( background, lineTop, lineBot, box);
+    }
+
+    public void setGameScene(GameScene gms){
+        this.gameScene = gms;
     }
 }

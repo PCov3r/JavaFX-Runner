@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Item{
-    double x, y;
+    private double x, y;
     private ImageView imgview; //Image à afficher
 
     public Item(double beginx, double beginy, double width, double length, Camera cam, String backgroundpath) {
@@ -19,7 +19,7 @@ public class Item{
         this.y = beginy;
     }
 
-    public Rectangle2D boundingBox(double x, double y, double width, double height){
+    public Rectangle2D getHitBox(double x, double y, double width, double height){
         return new Rectangle2D(x,y,width,height);
     }
 
