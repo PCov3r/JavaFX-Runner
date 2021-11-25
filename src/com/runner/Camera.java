@@ -41,9 +41,7 @@ public class Camera {
     }
 
     public void update(){
-        this.vy = calculateV(this.vy,this.ycoor,h.getYcoor(),0.5,1,1,0.8);
         this.vx = calculateV(this.vx,this.xcoor,h.getXcoor(),0.1,1,1,0.8);
-        //this.ycoor = calculateCoor(this.vy, this.ycoor, 0.5);
         this.xcoor = calculateCoor(this.vx, this.xcoor, 0.1);
 
     }

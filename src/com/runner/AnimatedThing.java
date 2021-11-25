@@ -104,6 +104,9 @@ public class AnimatedThing {
                 this.vy = 0;
                 this.attitude = 0;
             }
+            if(this.vy > 0){
+                this.frameidx = 1;
+            }
         }
     }
 

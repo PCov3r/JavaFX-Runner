@@ -24,11 +24,10 @@ public class LosingScene extends Scene {
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
 
-    public LosingScene(GameScene gms, Stage primaryStage, Pane p, double v, double v1, boolean b) {
+    public LosingScene(Stage primaryStage, Pane p, double v, double v1, boolean b) {
         super(p, v, v1, b);
         this.p = p;
         this.primaryStage = primaryStage;
-        this.gameScene = gms;
         Image back = new Image(".\\img\\menuback.jpg",v, v1,false,true);
         ImageView background = new ImageView(back);
 
@@ -80,7 +79,7 @@ public class LosingScene extends Scene {
         scoreTxt.setText(score.toString()+"m");
     }
 
-    public void setGameScene(GameScene gms){
+    public void setScene(GameScene gms){
         this.gameScene = gms;
     }
 }

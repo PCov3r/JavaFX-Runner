@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -32,7 +33,7 @@ public class GameScene extends Scene {
     private staticThing backgroundRight;
     private staticThing backgroundLeft;
     private Hero myhero;
-    private ArrayList<FireBall> projectiles = new ArrayList<FireBall>(); //Projectiles du heros
+    private ArrayList<FireBall> projectiles = new ArrayList<FireBall>();
     private FireBall fb;
     private ArrayList<Foe> ennemies;
     private Foe f;
@@ -49,12 +50,12 @@ public class GameScene extends Scene {
     private VBox box;
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
+    private KeyCode jumpKey = KeyCode.SPACE;
+    private KeyCode shootKey = KeyCode.ENTER;
 
-
-    public GameScene(Stage ps, LosingScene ls, Pane p, boolean showHitBox, double v, double v1, boolean b, double camx, double camy, double camOffset) {
+    public GameScene(Stage ps, Pane p, boolean showHitBox, double v, double v1, boolean b, double camx, double camy, double camOffset) {
         super(p, v, v1, b);
         this.primaryStage = ps;
-        this.loseScreen = ls;
         this.p = p;
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
@@ -113,45 +114,54 @@ public class GameScene extends Scene {
         box.setVisible(false);
         box.setAlignment(Pos.CENTER);
         box.getChildren().addAll(playBtn,quitBtn);
-
-        p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon, Pause, box); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
         box.setTranslateY(v1/2-35);
         box.setTranslateX((v-150)/2);
+
+        p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon, Pause, box); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
         myhero.addHitBox(showHitBox, p, myhero.getXcoor()-cam.getXcoor(),myhero.getYcoor(),75,100);
+    }
+
+    public void setScene(LosingScene lose){
+        this.loseScreen = lose;
     }
 
     public void listenKeys(){
         setOnKeyPressed( (event)->{
-            switch(event.getCode()) {
-                case SPACE -> {
-                    if(!paused) myhero.jump();
+            if(!paused) {
+                if(event.getCode() == jumpKey) {
+                    myhero.jump();
                 }
-                case ENTER -> {
-                    if(!paused) {
-                        if (myhero.getAmmo() > 0) {
-                            shoot(p);
-                        }
+                else if(event.getCode() == shootKey) {
+                    if (myhero.getAmmo() > 0) {
+                        shoot(p);
                     }
-                }
-                case ESCAPE -> {
-                    if(paused){
-                        paused = false;
-                        box.setVisible(false);
-                        Pause.setVisible(false);
-                        timer.start();
-                    } else {
-                        paused = true;
-                        timer.stop();
-                        Pause.toFront();
-                        Pause.setVisible(true);
-                        box.setVisible(true);
-                        box.toFront();
-
-                    }
-
                 }
             }
+            if (event.getCode() == KeyCode.ESCAPE) {
+                if (paused) {
+                    paused = false;
+                    box.setVisible(false);
+                    Pause.setVisible(false);
+                    timer.start();
+                } else {
+                    paused = true;
+                    timer.stop();
+                    Pause.toFront();
+                    Pause.setVisible(true);
+                    box.setVisible(true);
+                    box.toFront();
+
+                }
+
+            }
         });
+    }
+
+    public void changeShootKey(KeyCode key){
+        shootKey = key;
+    }
+    public void changeJumpKey(KeyCode key){
+        jumpKey = key;
     }
 
     public void reset(){
@@ -310,13 +320,16 @@ public class GameScene extends Scene {
     public void render(){
         distance = Math.round((float) myhero.getXcoor()/50);
         score.setText("Distance: "+distance+"m");
+
         ammo.setText(myhero.getAmmo().toString());
+
         backgroundRight.getImgview().setX(backgroundRight.getWidth() - (cam.getXcoor())%backgroundRight.getWidth());
         backgroundRight.getImgview().setY(- (cam.getYcoor())%backgroundRight.getLength());
         backgroundLeft.getImgview().setX(- cam.getXcoor()%backgroundLeft.getWidth());
         backgroundLeft.getImgview().setY(- (cam.getYcoor())%backgroundLeft.getLength());
         myhero.getImgview().setX(myhero.getXcoor()-cam.getXcoor()+cam.getOffset());
         myhero.getImgview().setY(myhero.getYcoor());
+
         if(bonus != null) {
             bonus.getImgview().setX(bonus.getXcoor()-myhero.getXcoor()+50);
             bonus.getImgview().setY(bonus.getYcoor());
@@ -383,6 +396,7 @@ public class GameScene extends Scene {
     };
 
     public void Start() {
+        listenKeys();
         paused = false;
         timer.start();
     }

@@ -40,7 +40,6 @@ public class Item{
     }
 
     public void remove(Pane p){
-
         p.getChildren().remove(imgview);
         imgview.setImage(null);
     }

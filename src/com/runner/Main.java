@@ -11,6 +11,7 @@ public class Main extends Application{
     GameScene game;
     MenuScene menu;
     LosingScene lose;
+    OptionScene options;
 
     @Override
     public void start(Stage primaryStage){
@@ -20,12 +21,20 @@ public class Main extends Application{
         Pane pane = new Pane(root);
         Pane menupane = new Pane(root);
         Pane losepane = new Pane(root);
-        lose = new LosingScene(game,primaryStage, losepane, 600, 400, true);
-        game = new GameScene(primaryStage, lose, pane, true,600, 400, true, 0, 0, 100);
-        menu = new MenuScene(primaryStage,menupane,game, 600, 400, true);
-        lose.setGameScene(game);
+        Pane optionspane = new Pane(root);
+        lose = new LosingScene(primaryStage, losepane, 600, 400, true);
+        game = new GameScene(primaryStage, pane, true,600, 400, true, 0, 0, 100);
+        menu = new MenuScene(primaryStage,menupane, 600, 400, true);
+        options = new OptionScene(primaryStage,optionspane,600,400,true);
+
+        lose.setScene(game);
+        game.setScene(lose);
+        menu.setScene(game, options);
+        options.setScene(menu, game);
+
         primaryStage.setScene(menu);
-        primaryStage.setResizable(true);
+        options.setJumpKey();
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
     public static void main(String[] args) {
