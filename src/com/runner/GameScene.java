@@ -59,8 +59,8 @@ public class GameScene extends Scene {
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
         this.cam = new Camera(camx, camy, camOffset, myhero);
-        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\desert.png");
-        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\desert.png");
+        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
+        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
         this.ennemies = new ArrayList<Foe>();
         Pause = new Rectangle(0,0,v,v1);
         Pause.setFill(Color.GRAY);
@@ -74,7 +74,7 @@ public class GameScene extends Scene {
         score.setY(30);
         score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         score.setText("Distance: 0m");
-        Image spriteSheet = new Image(".\\fireball.png",30, 30,true,false); //Chargement d'une nouvelle image
+        Image spriteSheet = new Image(".\\img\\fireball.png",30, 30,true,false); //Chargement d'une nouvelle image
         this.FireballIcon = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
         this.FireballIcon.setViewport(new Rectangle2D(0,0,30,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
         this.FireballIcon.setX(510); //Coordonnées de l'endroit où l'image doit être affichée
@@ -358,7 +358,7 @@ public class GameScene extends Scene {
             if (now - lastUpdate >= 8_000_000) { //Sera éxécuté toutes les 8_000_000ns
                 if(myhero.getXcoor()>5000 && myhero.getXcoor()%5000 > 1 && myhero.getXcoor()%5000<20 && bonus == null){
                     double x = rnd.nextInt(400)+600;
-                    bonus = new Item(x + myhero.getXcoor(),300,20,20,cam,"D:\\Documents\\Java projects\\Runner\\src\\shootBonus.png");
+                    bonus = new Item(x + myhero.getXcoor(),300,20,20,cam,".\\img\\shootBonus.png");
                     bonus.add(p);
                 }
 

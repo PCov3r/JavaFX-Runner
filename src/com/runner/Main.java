@@ -21,11 +21,11 @@ public class Main extends Application{
         Pane menupane = new Pane(root);
         Pane losepane = new Pane(root);
         lose = new LosingScene(game,primaryStage, losepane, 600, 400, true);
-        game = new GameScene(primaryStage, lose, pane, true,600, 400, true, 0, 0, 100); //On définit la taille de la fenêtre de jeu et la position de la caméra
+        game = new GameScene(primaryStage, lose, pane, true,600, 400, true, 0, 0, 100);
         menu = new MenuScene(primaryStage,menupane,game, 600, 400, true);
         lose.setGameScene(game);
         primaryStage.setScene(menu);
-        primaryStage.setResizable(true); //On définit la taille de fenêtre comme fixe
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
     public static void main(String[] args) {

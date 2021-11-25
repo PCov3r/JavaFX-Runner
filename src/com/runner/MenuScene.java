@@ -27,7 +27,7 @@ public class MenuScene extends Scene {
     public MenuScene(Stage primaryStage, Pane p, GameScene game, double v, double v1, boolean b) {
         super(p, v, v1, b);
         this.p = p;
-        Image back = new Image(".\\menuback.jpg",v, v1,false,true);
+        Image back = new Image(".\\img\\menuback.jpg",v, v1,false,true);
         ImageView background = new ImageView(back);
 
         myhero = new Hero(300, 100, 0, 0,100_000_000,6,85,100,85);

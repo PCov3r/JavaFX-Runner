@@ -29,7 +29,7 @@ public class LosingScene extends Scene {
         this.p = p;
         this.primaryStage = primaryStage;
         this.gameScene = gms;
-        Image back = new Image(".\\menuback.jpg",v, v1,false,true);
+        Image back = new Image(".\\img\\menuback.jpg",v, v1,false,true);
         ImageView background = new ImageView(back);
 
 

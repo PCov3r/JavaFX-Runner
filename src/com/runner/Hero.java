@@ -18,7 +18,7 @@ public class Hero extends AnimatedThing {
     private long prevTime = 0;
 
     public Hero(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer height, Integer width) {
-        super(x, y, 0,attitude, frameidx, period, maxidx, offset, 0,0,height, width, ".\\heros.png"); //Appel du super constructeur pour afficher notre heros
+        super(x, y, 0,attitude, frameidx, period, maxidx, offset, 0,0,height, width, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
         numberOfLives = 3;
 
         lighting.setDiffuseConstant(1.0);
@@ -27,7 +27,7 @@ public class Hero extends AnimatedThing {
         lighting.setSurfaceScale(0.0);
         lighting.setLight(new Light.Distant(45, 45, Color.RED));
 
-        Image spriteSheet = new Image(".\\hearts.png",114, 30,true,false); //Chargement d'une nouvelle image, ici la vie du héros
+        Image spriteSheet = new Image(".\\img\\hearts.png",114, 30,true,false); //Chargement d'une nouvelle image, ici la vie du héros
         this.hearts = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
         this.hearts.setViewport(new Rectangle2D(0,0,114,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
         this.hearts.setX(10); //Coordonnées de l'endroit où l'image doit être affichée
@@ -35,8 +35,8 @@ public class Hero extends AnimatedThing {
     }
 
     public void reset(Pane p){ //Reset de toutes les propriétés pour redémarrer le jeu
-        setXcoor(0); //Le héros est en 0
-        numberOfLives = 3; //Avec 3 vies
+        setXcoor(0);
+        numberOfLives = 3;
         this.hearts.setVisible(true);
         numberofAmmo = 0; //0 munitions
 
@@ -70,7 +70,7 @@ public class Hero extends AnimatedThing {
 
     public double getNumberOfLives(){
         return numberOfLives;
-    } //Nombre de vies
+    }
 
     public Integer getAmmo(){
         return numberofAmmo;
@@ -92,7 +92,7 @@ public class Hero extends AnimatedThing {
         isInvincible = state;
     }
 
-    public void updateLives(){ //Update du visuel de la vie du heros
+    public void updateLives(){
         if(numberOfLives>0) {
             this.hearts.setViewport(new Rectangle2D(0, 0, 38 * numberOfLives, 46));
         } else {
