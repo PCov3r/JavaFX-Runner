@@ -39,11 +39,11 @@ public class MenuScene extends Scene {
         title.setStroke(Color.BLACK);
         title.setFont(Font.font ("Impact", 60));
 
-        Rectangle backBox = new Rectangle(150, 100);
+        Rectangle backBox = new Rectangle(150, 50);
         backBox.setFill(Color.WHITESMOKE);
         backBox.setOpacity(0.5);
-        backBox.setX(50);
-        backBox.setY(150);
+        backBox.setX(60);
+        backBox.setY(160);
 
         Button playBtn = new Button("Jouer");
         playBtn.setMinWidth(150);
@@ -55,6 +55,12 @@ public class MenuScene extends Scene {
             game.listenKeys();
             game.Start();
         });
+
+        Rectangle backBox2 = new Rectangle(150, 50);
+        backBox2.setFill(Color.WHITESMOKE);
+        backBox2.setOpacity(0.5);
+        backBox2.setX(60);
+        backBox2.setY(225);
 
         Button quitBtn = new Button("Quitter");
         quitBtn.setMinWidth(150);
@@ -71,12 +77,12 @@ public class MenuScene extends Scene {
             }
         });
 
-        box = new VBox(5);
+        box = new VBox(20);
         box.setTranslateX(70);
         box.setTranslateY(170);
         box.getChildren().addAll(playBtn,quitBtn);
 
-        p.getChildren().addAll( background,myhero.getImgview(),title, backBox, box);
+        p.getChildren().addAll( background,myhero.getImgview(),title, backBox, backBox2, box);
         timerAnim.start();
     }
 

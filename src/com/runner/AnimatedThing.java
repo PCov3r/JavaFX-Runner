@@ -60,10 +60,6 @@ public abstract class AnimatedThing {
         return img;
     }
 
-    public void setVitesse(double v){
-        this.vx = v;
-    }
-
     public double getXcoor() {
         return x;
     }
@@ -75,8 +71,6 @@ public abstract class AnimatedThing {
     public double getYcoor() {
         return y;
     }
-
-    public double getVitesse() { return vx; }
 
     public void setAttitude(Integer attitude) {
         this.attitude = attitude;
@@ -99,14 +93,8 @@ public abstract class AnimatedThing {
         }
     }
 
-    public void calculateV(double dt){
-        this.vx = -10*Math.exp(-(1/2)*0.15)+10;
-    }
-
 
     public void updateMov(Integer step) {
-        calculateV(1);
-        //setVitesse(getVitesse()+0.01);
         this.x += step;
         if (this.attitude == 1 || this.attitude == 3) {
             this.vy += GRAVITY;
