@@ -26,10 +26,10 @@ public class MenuScene extends Scene {
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
-    public MenuScene(Stage primaryStage, Pane p, double v, double v1, boolean b) {
-        super(p, v, v1, b);
+    public MenuScene(Stage primaryStage, Pane p, double width, double height, boolean b) {
+        super(p, width, height, b);
         this.p = p;
-        Image back = new Image(".\\img\\menuback.jpg",v, v1,false,true);
+        Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
         myhero = new Hero(300, 100, 0, 0,100_000_000,6,85,100,85);

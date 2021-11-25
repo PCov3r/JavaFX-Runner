@@ -53,8 +53,8 @@ public class GameScene extends Scene {
     private KeyCode jumpKey = KeyCode.SPACE;
     private KeyCode shootKey = KeyCode.ENTER;
 
-    public GameScene(Stage ps, Pane p, boolean showHitBox, double v, double v1, boolean b, double camx, double camy, double camOffset) {
-        super(p, v, v1, b);
+    public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double heigth, boolean b, double camx, double camy, double camOffset) {
+        super(p, width, heigth, b);
         this.primaryStage = ps;
         this.p = p;
         this.showHitBox = showHitBox;
@@ -63,7 +63,7 @@ public class GameScene extends Scene {
         backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
         backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
         this.ennemies = new ArrayList<Foe>();
-        Pause = new Rectangle(0,0,v,v1);
+        Pause = new Rectangle(0,0,width,heigth);
         Pause.setFill(Color.GRAY);
         Pause.setOpacity(0.75);
         Pause.setVisible(false);
@@ -114,8 +114,8 @@ public class GameScene extends Scene {
         box.setVisible(false);
         box.setAlignment(Pos.CENTER);
         box.getChildren().addAll(playBtn,quitBtn);
-        box.setTranslateY(v1/2-35);
-        box.setTranslateX((v-150)/2);
+        box.setTranslateY(heigth/2-35);
+        box.setTranslateX((width-150)/2);
 
         p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon, Pause, box); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
         myhero.addHitBox(showHitBox, p, myhero.getXcoor()-cam.getXcoor(),myhero.getYcoor(),75,100);

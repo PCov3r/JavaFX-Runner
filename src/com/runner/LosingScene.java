@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -24,11 +23,11 @@ public class LosingScene extends Scene {
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
 
-    public LosingScene(Stage primaryStage, Pane p, double v, double v1, boolean b) {
-        super(p, v, v1, b);
+    public LosingScene(Stage primaryStage, Pane p, double v, double height, boolean b) {
+        super(p, v, height, b);
         this.p = p;
         this.primaryStage = primaryStage;
-        Image back = new Image(".\\img\\menuback.jpg",v, v1,false,true);
+        Image back = new Image(".\\img\\menuback.jpg",v, height,false,true);
         ImageView background = new ImageView(back);
 
 
