@@ -9,11 +9,11 @@ public class Foe extends AnimatedThing{
         isAlive = true;
     }
 
-    public boolean getAlive(){
+    public boolean isAlive(){
         return isAlive;
     }
 
-    public void setAlive(boolean al){
-        isAlive = al;
+    public void die(){
+        isAlive = false;
     }
 }

@@ -13,7 +13,7 @@ public class Main extends Application{
     LosingScene lose;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
 
         primaryStage.setTitle("Runner");
         Group root = new Group();
@@ -21,7 +21,7 @@ public class Main extends Application{
         Pane menupane = new Pane(root);
         Pane losepane = new Pane(root);
         lose = new LosingScene(game,primaryStage, losepane, 600, 400, true);
-        game = new GameScene(primaryStage, lose, pane, 600, 400, true, 0, 0, 100); //On définit la taille de la fenêtre de jeu et la position de la caméra
+        game = new GameScene(primaryStage, lose, pane, true,600, 400, true, 0, 0, 100); //On définit la taille de la fenêtre de jeu et la position de la caméra
         menu = new MenuScene(primaryStage,menupane,game, 600, 400, true);
         lose.setGameScene(game);
         primaryStage.setScene(menu);

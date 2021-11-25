@@ -26,6 +26,8 @@ import java.util.Random;
 public class GameScene extends Scene {
     private Camera cam;
     private boolean paused;
+    private int distance = 0;
+    private boolean showHitBox = false;
     private Pane p;
     private staticThing backgroundRight;
     private staticThing backgroundLeft;
@@ -36,7 +38,7 @@ public class GameScene extends Scene {
     private Foe f;
     private Integer numberOfFoes = 0;
     private Random rnd = new Random();
-    private long invincibleDuration = 2_500_000_000L;
+    private long invincibleDuration = 50;
     private Item bonus;
     private Rectangle Pause;
     private Text score = new Text();
@@ -45,12 +47,16 @@ public class GameScene extends Scene {
     private Stage primaryStage;
     private LosingScene loseScreen;
     private VBox box;
+    final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
+    final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
-    public GameScene(Stage ps, LosingScene ls, Pane p, double v, double v1, boolean b, double camx, double camy, double camOffset) {
+
+    public GameScene(Stage ps, LosingScene ls, Pane p, boolean showHitBox, double v, double v1, boolean b, double camx, double camy, double camOffset) {
         super(p, v, v1, b);
         this.primaryStage = ps;
         this.loseScreen = ls;
         this.p = p;
+        this.showHitBox = showHitBox;
         myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
         this.cam = new Camera(camx, camy, camOffset, myhero);
         backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\desert.png");
@@ -64,7 +70,7 @@ public class GameScene extends Scene {
         ammo.setY(30);
         ammo.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         ammo.setText("0");
-        score.setX(250);
+        score.setX(230);
         score.setY(30);
         score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         score.setText("Distance: 0m");
@@ -78,6 +84,8 @@ public class GameScene extends Scene {
         playBtn.setMinWidth(150);
         playBtn.setMinHeight(30);
         playBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        playBtn.setOnMouseEntered(e -> playBtn.setStyle(HOVERED_BUTTON_STYLE));
+        playBtn.setOnMouseExited(e -> playBtn.setStyle(IDLE_BUTTON_STYLE));
         playBtn.setOnAction(e -> {
             paused = false;
             box.setVisible(false);
@@ -89,6 +97,8 @@ public class GameScene extends Scene {
         quitBtn.setMinWidth(150);
         playBtn.setMinHeight(30);
         quitBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        quitBtn.setOnMouseEntered(e -> quitBtn.setStyle(HOVERED_BUTTON_STYLE));
+        quitBtn.setOnMouseExited(e -> quitBtn.setStyle(IDLE_BUTTON_STYLE));
         quitBtn.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Ce n'est qu'un au revoir");
@@ -107,7 +117,7 @@ public class GameScene extends Scene {
         p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon, Pause, box); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
         box.setTranslateY(v1/2-35);
         box.setTranslateX((v-150)/2);
-        myhero.setHitBox(true, p, 400,250,75,100);
+        myhero.addHitBox(showHitBox, p, myhero.getXcoor()-cam.getXcoor(),myhero.getYcoor(),75,100);
     }
 
     public void listenKeys(){
@@ -144,12 +154,11 @@ public class GameScene extends Scene {
         });
     }
 
-    public void reload(){
+    public void reset(){
         cam.reset();
         myhero.reset(p);
-        for(int i = 0; i<projectiles.size(); i++){ //Et aucun projectile n'est sur scène
-            removeProjectile(projectiles.get(i),p);
-        }
+        destroyAllProjectiles();
+        destroyAllFoes();
         timer.start();
     }
 
@@ -158,13 +167,20 @@ public class GameScene extends Scene {
     public void addFoe(Foe f){
         p.getChildren().add(f.getImgview());
         ennemies.add(f);
-        f.setHitBox(true, p, f.getXcoor(),250,60,100);
+        f.addHitBox(showHitBox, p, f.getXcoor()-cam.getXcoor(),f.getYcoor(),60,100);
     }
 
     public void removeFoe(Foe f){
         p.getChildren().remove(f.getImgview());
-        ennemies.remove(f);
         f.deleteHitBox(p);
+        ennemies.remove(f);
+    }
+
+    public void destroyAllFoes(){
+        for(int i = 0; i<ennemies.size(); i++){ //Et aucun projectile n'est sur scène
+            removeFoe(ennemies.get(i));
+        }
+        ennemies.clear();
     }
 
     public void createFoe(){
@@ -174,7 +190,7 @@ public class GameScene extends Scene {
                 numberOfFoes--;
             } else {
                 double lastFoeX = ennemies.get(ennemies.size() - 1).getXcoor();
-                Integer randomDistance = rnd.nextInt(500)+300;
+                Integer randomDistance = rnd.nextInt(400)+300;
                 addFoe(new Foe(lastFoeX+randomDistance, 250, 0, 0, 100_000_000, 6, 85, 100, 85));
                 numberOfFoes--;
             }
@@ -184,25 +200,24 @@ public class GameScene extends Scene {
     public void updateEnnemies(long now){
         for(int i = 0; i<ennemies.size(); i++){
             f = ennemies.get(i);
-            checkCollisionHeroFoe(myhero, f);
+            checkCollisionHeroFoe(f);
             if(projectiles.size()>0) {
                 checkCollisionFireballFoe(f, projectiles.get(0));
             }
-            f.updateAnim(now);
-            if(f.getAlive() == false || f.getXcoor()-cam.getXcoor()<-100){
+            if(f.isAlive() == false || f.getXcoor()-cam.getXcoor()<-100){
                 removeFoe(f);
             }
-            f.updateMov(-5);
+            f.update(now,-5);
         }
     }
 
-    public void checkCollisionHeroFoe(Hero h, Foe f) {
-        if (h.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(), h.getYcoor(), 75, 70).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
-            f.setAlive(false);
+    public void checkCollisionHeroFoe(Foe f) {
+        if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(), myhero.getYcoor(), 75, 70).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
+            f.die();
             if (myhero.getIsInvincible() == false) {
-                h.setNumberOfLives(-1);
+                myhero.getImgview().setEffect(myhero.addEffect());
+                myhero.setNumberOfLives(-1);
                 myhero.setIsInvincible(true);
-                invincibleDuration = 25;
             }
         }
     }
@@ -211,11 +226,11 @@ public class GameScene extends Scene {
     public void shoot(Pane p){
         if(projectiles.size()>0) { //Si ça n'est pas le 1e projectile...
             if (projectiles.get(projectiles.size() - 1).getXcoor() - myhero.getXcoor() > 100) { //...afin d'éviter le spam de projectile on atteint que le précédent ait atteint un certain x
-                addProjectile(new FireBall(myhero.getXcoor()+50, myhero.getYcoor() , 0, 0, 100, 0, 0, 100, 200), p);
+                addProjectile(new FireBall(myhero.getXcoor()+50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
                 myhero.addAmmo(-1); //On met à jour le nb de munitions
             }
         } else { //Si c'est le premier projectile qu'on tire, on l'ajoute directement à la scène
-            addProjectile(new FireBall(myhero.getXcoor() +50, myhero.getYcoor() , 0, 0, 100, 0, 0, 100, 200), p);
+            addProjectile(new FireBall(myhero.getXcoor() +50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
             myhero.addAmmo(-1);
         }
         if (myhero.getAttitude() == 0) { //On met le heros en attitude : tirer
@@ -227,11 +242,11 @@ public class GameScene extends Scene {
     }
 
 
-    public void updateProjectiles(Pane p){
+    public void updateProjectiles(){
         for(int i = 0; i<projectiles.size(); i++){
             fb = projectiles.get(i);
             if(fb.getXcoor()>myhero.getXcoor()+400){
-                removeProjectile(fb, p);
+                removeProjectile(fb);
                 if(projectiles.size() == 0){
                     if(myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
                         myhero.setAttitude(1);
@@ -246,26 +261,33 @@ public class GameScene extends Scene {
         }
     }
 
-    public void addProjectile(FireBall fb, Pane p){ //Ajout d'un projectile à notre liste et notre scène
+    public void addProjectile(FireBall fb){ //Ajout d'un projectile à notre liste et notre scène
         p.getChildren().add(fb.getImgview());
         projectiles.add(fb);
+        fb.addHitBox(showHitBox, p, fb.getXcoor()-cam.getXcoor()+cam.getOffset(),fb.getYcoor()+15,60,30);
     }
 
-    public void removeProjectile(FireBall fb, Pane p){ //Supression du projectile
+    public void removeProjectile(FireBall fb){ //Supression du projectile
         projectiles.remove(fb);
         p.getChildren().remove(fb.getImgview());
+        fb.deleteHitBox(p);
+    }
+
+    public void destroyAllProjectiles(){
+        for(int i = 0; i<projectiles.size(); i++){ //Et aucun projectile n'est sur scène
+            removeProjectile(projectiles.get(i));
+        }
+        projectiles.clear();
     }
 
     public void checkCollisionFireballFoe(Foe f, FireBall fb) {
         if (fb != null) {
-            if (fb.getHitBox(fb.getXcoor() + cam.getOffset(), fb.getYcoor(), 30, 30).intersects(f.getHitBox(f.getXcoor(), f.getYcoor(), 50, 70))) {
-                f.setAlive(false);
-                removeProjectile(fb,p);
+            if (fb.getHitBox(fb.getXcoor()-cam.getXcoor()+cam.getOffset(), fb.getYcoor()+15, 30, 30).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
+                f.die();
+                removeProjectile(fb);
                 p.getChildren().remove(fb.getImgview());
                 if (projectiles.size() == 0) {
-                    if (myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
-                        myhero.setAttitude(1);
-                    } else if (myhero.getAttitude() == 1) {
+                    if (myhero.getAttitude() == 1 || myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
                         myhero.setAttitude(1);
                     } else { //Sinon on revient à l'animation du héros qui court
                         myhero.setAttitude(0);
@@ -277,7 +299,7 @@ public class GameScene extends Scene {
 
     public void checkCollisionHeroBonus(Hero h, Item i) {
        if(i != null){
-           if (h.getHitBox(h.getXcoor()+cam.getOffset(),h.getYcoor(),30, 70).intersects(i.getHitBox(i.getXcoor(),i.getYcoor(),20, 20))) {
+           if (h.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(),h.getYcoor(),30, 70).intersects(i.getHitBox(i.getXcoor()-cam.getXcoor(),i.getYcoor(),20, 20))) {
                h.addAmmo(+5);
                i.remove(p);
                bonus = null;
@@ -286,7 +308,7 @@ public class GameScene extends Scene {
     }
 
     public void render(){
-        Integer distance = Math.round((float) myhero.getXcoor()/50);
+        distance = Math.round((float) myhero.getXcoor()/50);
         score.setText("Distance: "+distance+"m");
         ammo.setText(myhero.getAmmo().toString());
         backgroundRight.getImgview().setX(backgroundRight.getWidth() - (cam.getXcoor())%backgroundRight.getWidth());
@@ -320,35 +342,38 @@ public class GameScene extends Scene {
 
         @Override
         public void handle(long now) {
-//            if(myhero.getIsInvincible()==true) {
-//                invincibleDuration--;
-//            }
-//            if(invincibleDuration < 0){
-//                myhero.setIsInvincible(false);
-//            }
+            if(myhero.getIsInvincible()==true) {
+                invincibleDuration--;
+                if(invincibleDuration < 0){
+                    myhero.setIsInvincible(false);
+                    invincibleDuration = 50;
+                }
+            }
+
             if((now - lastfoeGen) >= (rnd.nextInt(4)+3)*1_000_000_000 && ennemies.size() == 0){ //Ajout d'ennemis ttes les 4 à 7 sec
                 numberOfFoes = rnd.nextInt(5) + 2;
                 lastfoeGen = now;
                 createFoe();
             }
-            if (now - lastUpdate >= 8_000_000) { //Sera éxécuté toutes les 80_000_000ns
+            if (now - lastUpdate >= 8_000_000) { //Sera éxécuté toutes les 8_000_000ns
                 if(myhero.getXcoor()>5000 && myhero.getXcoor()%5000 > 1 && myhero.getXcoor()%5000<20 && bonus == null){
                     double x = rnd.nextInt(400)+600;
                     bonus = new Item(x + myhero.getXcoor(),300,20,20,cam,"D:\\Documents\\Java projects\\Runner\\src\\shootBonus.png");
                     bonus.add(p);
                 }
 
-                myhero.updateAnim(now);
-                myhero.updateMov(3);
-                myhero.updateLives();
+                myhero.update(now, 3);
+                updateEnnemies(now);
+                updateProjectiles();
                 checkCollisionHeroBonus(myhero,bonus);
                 cam.update();
+
                 if(myhero.getNumberOfLives() == 0){
+                    loseScreen.showScore(distance);
                     primaryStage.setScene(loseScreen);
                     timer.stop();
                 }
-                updateProjectiles(p);
-                updateEnnemies(now);
+
                 render();
                 lastUpdate = now ;
             }

@@ -1,6 +1,5 @@
 package com.runner;
 
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,20 +7,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 
 public abstract class AnimatedThing {
-    private double x, y, vitesse;
+    private double x, y, vx, vy, ax, ay;
     private ImageView img;
     private Integer attitude;
     private Integer frameidx, period, maxidx, offset, height, width;
     private Rectangle hitBoxImg;
-    private double vel = 75;
+    private double GRAVITY = 0.8;
 
-    public AnimatedThing(double x, double y,double vitesse, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer viewx, Integer viewy, Integer height, Integer width, String thingPath) {
+    public AnimatedThing(double x, double y,double vx, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer viewx, Integer viewy, Integer height, Integer width, String thingPath) {
         this.x = x;
         this.y = y;
-        this.vitesse = vitesse;
+        this.vx = vx;
         this.attitude = attitude;
         this.frameidx = frameidx;
         this.period = period;
@@ -36,7 +34,7 @@ public abstract class AnimatedThing {
         this.img.setY(this.y);
     }
 
-    public void setHitBox(boolean show, Pane p, double x, double y, double width, double height){
+    public void addHitBox(boolean show, Pane p, double x, double y, double width, double height){
         hitBoxImg = new Rectangle(x,y,width,height);
         hitBoxImg.setStrokeWidth(2.0);
         hitBoxImg.setStroke(Color.RED);
@@ -49,7 +47,7 @@ public abstract class AnimatedThing {
     public Rectangle2D getHitBox(double x, double y, double width, double height){
         if(this.hitBoxImg != null) {
             hitBoxImg.setX(x);
-            hitBoxImg.setY(this.y);
+            hitBoxImg.setY(y);
         }
         return(new Rectangle2D(x,y,width,height));
     }
@@ -63,7 +61,7 @@ public abstract class AnimatedThing {
     }
 
     public void setVitesse(double v){
-        this.vitesse = v;
+        this.vx = v;
     }
 
     public double getXcoor() {
@@ -78,7 +76,7 @@ public abstract class AnimatedThing {
         return y;
     }
 
-    public double getVitesse() { return vitesse; }
+    public double getVitesse() { return vx; }
 
     public void setAttitude(Integer attitude) {
         this.attitude = attitude;
@@ -88,66 +86,45 @@ public abstract class AnimatedThing {
         return this.attitude;
     }
 
-    public static double constrain(double val, float min, float max) {
-        return Math.max(min, Math.min(max, val));
-    }
-
     public void jump(){
         if(this.attitude == 0) {
             this.attitude = 1;
             this.frameidx = 0;
+            this.vy = -16;
         }
         if(this.attitude == 2){
             this.attitude = 3;
             this.frameidx = 0;
+            this.vy = -16;
         }
     }
 
     public void calculateV(double dt){
-        this.vitesse = -10*Math.exp(-(1/2)*0.15)+10;
+        this.vx = -10*Math.exp(-(1/2)*0.15)+10;
     }
 
 
-    public void updateMov(Integer step){
+    public void updateMov(Integer step) {
         calculateV(1);
         //setVitesse(getVitesse()+0.01);
-        x += step;
-        if(this.attitude == 1 || this.attitude == 3) {
-
-            if (this.y > 50 && frameidx == 0) {
-                this.vel = this.vel - 10*0.75;
-                if(this.vel < 5){
-                    this.vel = 5;
-                }
-                if (this.y - this.vel * 0.75 < 50) {
-                    this.frameidx = 1;
-                    this.vel = 0;
-                } else {
-                    this.y = this.y - this.vel * 0.75;
-                }
-            } else {
-                this.vel = this.vel + 9.8 * 0.25;
-                if (this.vel > 75) {
-                    this.vel = 75;
-                }
-                if (this.y + this.vel * 0.25 > 250) {
-                    this.y = 250;
-                    this.vel = 75;
-                    this.frameidx = 0;
-                    this.attitude = 0;
-                } else {
-                    this.y = this.y + this.vel * 0.25;
-                }
+        this.x += step;
+        if (this.attitude == 1 || this.attitude == 3) {
+            this.vy += GRAVITY;
+            this.y += this.vy;
+            if (this.y > 250) {
+                this.y = 250;
+                this.vy = 0;
+                this.attitude = 0;
             }
         }
     }
 
-    public void updateAnim(long now){
+    public void update(long now, int step){
         if(this.attitude == 0 || this.attitude == 2){
             frameidx = Math.toIntExact((now/period)%maxidx);
         }
         this.img.setViewport(new Rectangle2D(this.offset*this.frameidx,this.attitude*120,width,height));
-
+        updateMov(step);
     }
 
 }

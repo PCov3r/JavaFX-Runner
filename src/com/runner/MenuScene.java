@@ -21,6 +21,8 @@ public class MenuScene extends Scene {
     private Pane p;
     private VBox box;
     private Hero myhero;
+    final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
+    final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
     public MenuScene(Stage primaryStage, Pane p, GameScene game, double v, double v1, boolean b) {
         super(p, v, v1, b);
@@ -45,7 +47,9 @@ public class MenuScene extends Scene {
 
         Button playBtn = new Button("Jouer");
         playBtn.setMinWidth(150);
-        playBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        playBtn.setStyle("-fx-hover-color: red ; -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        playBtn.setOnMouseEntered(e -> playBtn.setStyle(HOVERED_BUTTON_STYLE));
+        playBtn.setOnMouseExited(e -> playBtn.setStyle(IDLE_BUTTON_STYLE));
         playBtn.setOnAction(e -> {
             primaryStage.setScene(game);
             game.listenKeys();
@@ -54,7 +58,9 @@ public class MenuScene extends Scene {
 
         Button quitBtn = new Button("Quitter");
         quitBtn.setMinWidth(150);
-        quitBtn.setStyle("-fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        quitBtn.setStyle("-fx-hover-color: red ; -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ");
+        quitBtn.setOnMouseEntered(e -> quitBtn.setStyle(HOVERED_BUTTON_STYLE));
+        quitBtn.setOnMouseExited(e -> quitBtn.setStyle(IDLE_BUTTON_STYLE));
         quitBtn.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Ce n'est qu'un au revoir");
@@ -86,7 +92,7 @@ public class MenuScene extends Scene {
 
         @Override
         public void handle(long now) {
-                myhero.updateAnim(now);
+                myhero.update(now, 0);
                 render();
                 lastUpdate = now ;
             }
