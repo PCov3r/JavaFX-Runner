@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public abstract class AnimatedThing {
+public class AnimatedThing {
     private double x, y, vx, vy, ax, ay;
     private ImageView img;
     private Integer attitude;
