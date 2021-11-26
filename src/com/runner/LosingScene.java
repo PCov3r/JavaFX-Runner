@@ -18,7 +18,6 @@ import javafx.stage.Stage;
  */
 public class LosingScene extends Scene {
     GameScene gameScene;
-    Stage primaryStage;
     private Pane p;
 
     Text scoreTxt;
@@ -27,7 +26,7 @@ public class LosingScene extends Scene {
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
     /**
-     * Not much to see here. Just the constructor of the losing scene. Though it can seem quite long, it is only filled with lines of code intended to improve the visual aspect of this scene
+     * Not much to see here. Just the constructor of the losing scene. Though it can seem quite long, it is only filled with lines of code intended to improve the visual aspect of this scene.
      * @param primaryStage the primaryStage used to make a link with the GameScene when the player wants to play again
      * @param p the pane element associated with the scene
      * @param width the scene's width in pixels
@@ -36,7 +35,6 @@ public class LosingScene extends Scene {
     public LosingScene(Stage primaryStage, Pane p, double width, double height) {
         super(p, width, height);
         this.p = p;
-        this.primaryStage = primaryStage;
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
@@ -84,10 +82,18 @@ public class LosingScene extends Scene {
         p.getChildren().addAll( background, title, box, scoreTxt);
     }
 
+    /**
+     * Method used to make the link between the GameScene score and its display on the ending scene.
+     * @param score the player's score
+     */
     public void showScore(Integer score){
         scoreTxt.setText(score.toString()+"m");
     }
 
+    /**
+     * Method used to make the link between the LosingScene and the GameScene. If the GameScene is set before initializing it, it can cause error, hence this method.
+     * @param gms the GameScene element to link to the LosingScene, in order to reload the game if the player wants to start again
+     */
     public void setScene(GameScene gms){
         this.gameScene = gms;
     }

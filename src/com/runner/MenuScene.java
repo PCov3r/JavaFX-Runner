@@ -26,8 +26,9 @@ public class MenuScene extends Scene {
     private GameScene game;
     private OptionScene options;
     private Pane p;
-    private VBox box;
+
     private Hero myhero;
+    private VBox box;
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 

@@ -6,18 +6,18 @@ import javafx.scene.image.ImageView;
 
 
 /**
- * StaticThing is the class that holds the methods used by static elements : background for example
+ * StaticThing is the class that holds the methods used by static elements : background for example.
  */
 public class staticThing {
     /**
-     * A staticThing is defined by a width, a height and an imageView that we will use to make it evolve
+     * A staticThing is defined by a width, a height and an imageView that we will use to make it evolve.
      */
     private double width = 0;
     private double height = 0;
     private ImageView imgview;
 
     /**
-     * Sole constructor
+     * Sole constructor.
      * @param viewx the x coordinate of the image part to show
      * @param viewy the y coordinate of the image part to show
      * @param width the width of the image part to show

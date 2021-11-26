@@ -25,14 +25,14 @@ public class Camera {
     }
 
     /**
-     * A simple method that reset the camera position. No action on the y axis is needed as it doesn't move from its origin
+     * A simple method that reset the camera position. No action on the y axis is needed as it doesn't move from its origin.
      */
     public void reset(){
         this.xcoor = 0;
     }
 
     /**
-     * A method that calculate the speed on the x axis
+     * A method that calculate the speed on the x axis.
      * @param vlast the last speed of the camera
      * @param coor the initial x coordinate of the camera
      * @param coorhero the initial x coordinate of the hero
@@ -49,7 +49,7 @@ public class Camera {
     }
 
     /**
-     * A method to calculate the next x coordinate of the camera to make it match the hero's one
+     * A method to calculate the next x coordinate of the camera to make it match the hero's one.
      * @param vx the speed along the x axis
      * @param coor the x coordinate of the camera
      * @param dt the time interval resulting from the temporal discretization of the equations
@@ -85,7 +85,7 @@ public class Camera {
     }
 
     /**
-     * Method that update the position of the camera to make it follow the hero using a spring-mass effect
+     * Method that update the position of the camera to make it follow the hero using a spring-mass effect.
      */
     public void update(){
         this.vx = calculateV(this.vx,this.xcoor,h.getXcoor(),0.1,1,1,0.8);
@@ -94,7 +94,7 @@ public class Camera {
     }
 
     /**
-     * A simple method to get the camera position for debugging purpose
+     * A simple method to get the camera position for debugging purpose.
      * @return a string containing the camera position
      */
     @Override
