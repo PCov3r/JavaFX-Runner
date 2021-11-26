@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.prefs.Preferences;
 
 
 public class GameScene extends Scene {
@@ -60,20 +61,19 @@ public class GameScene extends Scene {
      * @param showHitBox
      * @param width
      * @param heigth
-     * @param b
      * @param camx
      * @param camy
      * @param camOffset
      */
-    public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double heigth, boolean b, double camx, double camy, double camOffset) {
-        super(p, width, heigth, b);
+    public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double heigth, double camx, double camy, double camOffset) {
+        super(p, width, heigth);
         this.primaryStage = ps;
         this.p = p;
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
         this.cam = new Camera(camx, camy, camOffset, myhero);
-        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
-        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
+        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\parallax\\6.png");
+        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\parallax\\6.png");
         this.ennemies = new ArrayList<Foe>();
         Pause = new Rectangle(0,0,width,heigth);
         Pause.setFill(Color.GRAY);
@@ -336,9 +336,9 @@ public class GameScene extends Scene {
         ammo.setText(myhero.getAmmo().toString());
 
         backgroundRight.getImgview().setX(backgroundRight.getWidth() - (cam.getXcoor())%backgroundRight.getWidth());
-        backgroundRight.getImgview().setY(- (cam.getYcoor())%backgroundRight.getLength());
+        backgroundRight.getImgview().setY(- (cam.getYcoor())%backgroundRight.getHeight());
         backgroundLeft.getImgview().setX(- cam.getXcoor()%backgroundLeft.getWidth());
-        backgroundLeft.getImgview().setY(- (cam.getYcoor())%backgroundLeft.getLength());
+        backgroundLeft.getImgview().setY(- (cam.getYcoor())%backgroundLeft.getHeight());
         myhero.getImgview().setX(myhero.getXcoor()-cam.getXcoor()+cam.getOffset());
         myhero.getImgview().setY(myhero.getYcoor());
 

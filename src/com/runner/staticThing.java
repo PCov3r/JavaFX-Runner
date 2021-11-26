@@ -4,34 +4,59 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.concurrent.CancellationException;
 
+/**
+ * StaticThing is the class that holds the methods used by static elements : background for example
+ */
 public class staticThing {
-    private double width = 0; //largeur du background
-    private double length = 0; //longueur du background
-    private ImageView imgview; //Image à afficher
+    /**
+     * A staticThing is defined by a width, a height and an imageView that we will use to make it evolve
+     */
+    private double width = 0;
+    private double height = 0;
+    private ImageView imgview;
 
-    //Le constructeur prend en paramètre beginx, beginy : les coordonnées à partir desquels le viewport commence, width et length, la taille du viewport, placex et placey l'origine de l'image, ie l'endroit où elle sera affichée dans la scène. Enfin, backgroundpath, le chemin d'accès à l'image.
-    public staticThing(double viewx, double viewy, double width, double length, Camera cam, String backgroundpath) {
+    /**
+     * Sole constructor
+     * @param viewx the x coordinate of the image part to show
+     * @param viewy the y coordinate of the image part to show
+     * @param width the width of the image part to show
+     * @param height the length of the image part to show
+     * @param cam a Camera object associated with the hero, to move the static thing accordingly
+     * @param backgroundpath the path of the image to show
+     */
+    public staticThing(double viewx, double viewy, double width, double height, Camera cam, String backgroundpath) {
         this.width = width;
-        this.length = length;
-        Image spriteSheet = new Image(backgroundpath); //Chargement d'une nouvelle image
-        this.imgview = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
-        this.imgview.setViewport(new Rectangle2D(viewx,viewy,width,length)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
-        this.imgview.setX(width-cam.getXcoor()%cam.getXcoor()); //Coordonnées de l'endroit où l'image doit être affichée
+        this.height = height;
+        Image spriteSheet = new Image(backgroundpath);
+        this.imgview = new ImageView(spriteSheet);
+        this.imgview.setViewport(new Rectangle2D(viewx,viewy,width,height));
+        this.imgview.setX(width-cam.getXcoor()%cam.getXcoor());
         this.imgview.setY(-cam.getYcoor()%cam.getYcoor());
     }
 
+    /**
+     * This method is used to manipulate the imageView element, in order to move it on the screen for example.
+     * @return the staticThing imageView to be used in the Scene
+     */
     public ImageView getImgview() {
         return imgview;
     }
 
+    /**
+     *
+     * @return the staticThing width
+     */
     public double getWidth() {
         return width;
     }
 
-    public double getLength() {
-        return length;
+    /**
+     *
+     * @return the staticThing height
+     */
+    public double getHeight() {
+        return height;
     }
 }
 

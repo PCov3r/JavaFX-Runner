@@ -11,8 +11,7 @@ import javafx.scene.shape.Rectangle;
 public class AnimatedThing {
     private double x, y, vx, vy, ax, ay;
     private ImageView img;
-    private Integer attitude;
-    private Integer frameidx, period, maxidx, offset, height, width;
+    private Integer attitude, frameidx, period, maxidx, offset, height, width;
     private Rectangle hitBoxImg;
     private double GRAVITY = 0.8;
 
@@ -27,6 +26,7 @@ public class AnimatedThing {
         this.offset = offset;
         this.height = height;
         this.width = width;
+
         Image spriteSheet = new Image(thingPath);
         this.img = new ImageView(spriteSheet);
         this.img.setViewport(new Rectangle2D(viewx,viewy,width,height));

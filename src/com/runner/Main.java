@@ -22,10 +22,10 @@ public class Main extends Application{
         Pane menupane = new Pane(root);
         Pane losepane = new Pane(root);
         Pane optionspane = new Pane(root);
-        lose = new LosingScene(primaryStage, losepane, 600, 400, true);
-        game = new GameScene(primaryStage, pane, true,600, 400, true, 0, 0, 100);
-        menu = new MenuScene(primaryStage,menupane, 600, 400, true);
-        options = new OptionScene(primaryStage,optionspane,600,400,true);
+        lose = new LosingScene(primaryStage, losepane, 600, 400);
+        game = new GameScene(primaryStage, pane, true,600, 400,  0, 0, 100);
+        menu = new MenuScene(primaryStage,menupane, 600, 400);
+        options = new OptionScene(primaryStage,optionspane,600,400);
 
         lose.setScene(game);
         game.setScene(lose);

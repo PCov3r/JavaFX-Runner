@@ -13,21 +13,31 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * A Scene extension used as an ending scene. It will be used to display the player's score as well as the possibility to play again or exit the game.
+ */
 public class LosingScene extends Scene {
-    Text scoreTxt;
-    private Pane p;
-    private VBox box;
-    Stage primaryStage;
     GameScene gameScene;
+    Stage primaryStage;
+    private Pane p;
+
+    Text scoreTxt;
+    private VBox box;
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
-
-    public LosingScene(Stage primaryStage, Pane p, double v, double height, boolean b) {
-        super(p, v, height, b);
+    /**
+     * Not much to see here. Just the constructor of the losing scene. Though it can seem quite long, it is only filled with lines of code intended to improve the visual aspect of this scene
+     * @param primaryStage the primaryStage used to make a link with the GameScene when the player wants to play again
+     * @param p the pane element associated with the scene
+     * @param width the scene's width in pixels
+     * @param height the scene's height in pixels
+     */
+    public LosingScene(Stage primaryStage, Pane p, double width, double height) {
+        super(p, width, height);
         this.p = p;
         this.primaryStage = primaryStage;
-        Image back = new Image(".\\img\\menuback.jpg",v, height,false,true);
+        Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
 
