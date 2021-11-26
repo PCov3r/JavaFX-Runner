@@ -10,18 +10,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 
-import java.net.URL;
-import java.nio.file.Paths;
-
-
+/**
+ * MenuScene extends the Scene class by adding all the elements required to get a (almost) beautiful menu : buttons to switch between scenes and our running hero.
+ */
 public class MenuScene extends Scene {
     private GameScene game;
     private OptionScene options;
@@ -32,6 +29,13 @@ public class MenuScene extends Scene {
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
+    /**
+     * As the other Scene extensions, the MenuScene does not need much parameters. The main body of the constructor consists of elements style.
+     * @param primaryStage the primaryStage used to make a link with the other Scenes (GameScene and OptionScene) when the player wants to play or change the key settings
+     * @param p the pane element associated with the scene
+     * @param width the scene's width in pixels
+     * @param height the scene's height in pixels
+     */
     public MenuScene(Stage primaryStage, Pane p, double width, double height) {
         super(p, width, height);
         this.p = p;
@@ -110,26 +114,34 @@ public class MenuScene extends Scene {
         timerAnim.start();
     }
 
+    /**
+     * Method used to make the link between the MenuScene and the other Scenes.
+     * @param game the GameScene used to show the game
+     * @param options the OptionScene used to change key settings
+     */
     public void setScene(GameScene game, OptionScene options){
         this.game = game;
         this.options = options;
     }
 
-
+    /**
+     * To make our menu more attractive, we added our hero. This method render the hero animation in our menu.
+     */
     public void render() {
         myhero.getImgview().setX(myhero.getXcoor());
         myhero.getImgview().setY(myhero.getYcoor());
     }
 
 
+    /**
+     * The timer is used to animate our running hero and to render it in our menu.
+     */
     private AnimationTimer timerAnim = new AnimationTimer() {
-        private long lastUpdate = 0 ;
 
         @Override
         public void handle(long now) {
                 myhero.update(now, 0);
                 render();
-                lastUpdate = now ;
             }
     };
 }
