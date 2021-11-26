@@ -8,11 +8,19 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
+    /**
+     * All the Scenes that compose the runner
+     */
     GameScene game;
     MenuScene menu;
     LosingScene lose;
     OptionScene options;
 
+    /**
+     * The "hello world" code of the Java Project.
+     * Set the different panes to all scenes and link the latter between them.
+     * @param primaryStage the stage on which the game will be shown
+     */
     @Override
     public void start(Stage primaryStage){
 
@@ -33,7 +41,7 @@ public class Main extends Application{
         options.setScene(menu, game);
 
         primaryStage.setScene(menu);
-        options.setJumpKey();
+        options.setKeys();
         primaryStage.setResizable(false);
         primaryStage.show();
     }

@@ -5,43 +5,84 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**
+ * This class implements collectible item for our hero (projectiles bonus).
+ * It simply consists in an imageView to which is associated a hitbox.
+ */
 public class Item{
     private double x, y;
-    private ImageView imgview; //Image à afficher
+    private ImageView imgview;
 
-    public Item(double beginx, double beginy, double width, double length, Camera cam, String backgroundpath) {
-        Image spriteSheet = new Image(backgroundpath); //Chargement d'une nouvelle image
-        this.imgview = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
-        this.imgview.setViewport(new Rectangle2D(0,0,width,length)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
-        this.imgview.setX(beginx); //Coordonnées de l'endroit où l'image doit être affichée
-        this.imgview.setY(beginy);
-        this.x = beginx;
-        this.y = beginy;
+    /**
+     * The constructor allow to change the bonus design (as long as the hitbox is set accordingly).
+     * @param xcoor the x coordinates of the bonus position
+     * @param ycoor the y coordinates of the bonus position
+     * @param viewx the x coordinate of the image part to show
+     * @param viewy the y coordinate of the image part to show
+     * @param width the width of the image part to show
+     * @param height the length of the image part to show
+     * @param backgroundpath the path of the bonus spritesheet
+     */
+    public Item(double xcoor, double ycoor, double viewx, double viewy, double width, double height, String backgroundpath) {
+        Image spriteSheet = new Image(backgroundpath);
+        this.imgview = new ImageView(spriteSheet);
+        this.imgview.setViewport(new Rectangle2D(viewx,viewy,width,height));
+        this.imgview.setX(xcoor);
+        this.imgview.setY(ycoor);
+        this.x = xcoor;
+        this.y = ycoor;
     }
 
+    /**
+     * Method used to get the bonus hitbox and thereafter check for collision between the hero and the bonus.
+     * @param x the x coordinate of the bonus hitbox
+     * @param y the y coordinate of the bonus hitbox
+     * @param width the width of the hitbox
+     * @param height the height of the hitbox
+     * @return a Rectangle2D object that can be used with the intersects() method to check for collision
+     */
     public Rectangle2D getHitBox(double x, double y, double width, double height){
         return new Rectangle2D(x,y,width,height);
     }
 
+    /**
+     *
+     * @return the x coordinates of the bonus
+     */
     public double getXcoor() {
         return x;
     }
 
+    /**
+     *
+     * @return the y coordinates of the bonus
+     */
     public double getYcoor() {
         return y;
     }
 
+    /**
+     *
+     * @return the imageView of the bonus to apply visual changes on the latter
+     */
     public ImageView getImgview() {
         return imgview;
     }
 
+    /**
+     * Method used to add a bonus to pane, in order to make it visible
+     * @param p the pane to which the bonus is added
+     */
     public void add(Pane p){
         p.getChildren().add(imgview);
     }
 
+    /**
+     * Method used to remove a bonus to pane, in order to make it unvisible
+     * @param p the pane from which the bonus is removed
+     */
     public void remove(Pane p){
         p.getChildren().remove(imgview);
-        imgview.setImage(null);
     }
 
 }

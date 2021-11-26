@@ -12,10 +12,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * A Scene extension that provides the possibility for the player to change its ingame keyboard settings
+ */
 public class OptionScene extends Scene {
     private MenuScene menu;
     private GameScene game;
     private Pane p;
+
     private VBox box;
     private Button jumpBtn, shootBtn, returnBtn;
     private boolean jumpChange = false;
@@ -23,6 +27,13 @@ public class OptionScene extends Scene {
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
 
+    /**
+     * As the other Scene extensions, the OptionScene does not need much parameters. The main body of the constructor consists of elements style and buttons settings.
+     * @param primaryStage the primaryStage used to make a link with the other Scene (MenuScene) when the player wants to go back to the menu
+     * @param p the pane element associated with the scene
+     * @param width the scene's width in pixels
+     * @param height the scene's height in pixels
+     */
     public OptionScene(Stage primaryStage, Pane p, double width, double height) {
         super(p, width, height);
         this.p = p;
@@ -49,7 +60,6 @@ public class OptionScene extends Scene {
             disableBtn();
             jumpChange = true;
         });
-
 
         shootBtn = new Button("ENTER");
         shootBtn.setMinWidth(150);
@@ -80,24 +90,41 @@ public class OptionScene extends Scene {
         p.getChildren().addAll(background, returnBtn,box);
     }
 
+    /**
+     * Method used to make the link between the MenuScene and the OptionScene.
+     * @param menu the MenuScene in which the player will get back to
+     * @param game the GameScene to which the controls will be linked
+     */
     public void setScene(MenuScene menu, GameScene game){
         this.menu = menu;
         this.game = game;
     }
 
+    /**
+     * Method used to disable all the other buttons when the player has not assigned a key to the selected action.
+     * This prevent the player to escape the OptionScene without having changed his controls.
+     */
     public void disableBtn(){
         shootBtn.setDisable(true);
         jumpBtn.setDisable(true);
         returnBtn.setDisable(true);
     }
+
+    /**
+     * Method used to renable all the buttons after the player's choice.
+     */
     public void enableBtn(){
         shootBtn.setDisable(false);
         jumpBtn.setDisable(false);
         returnBtn.setDisable(false);
     }
 
-
-    public void setJumpKey(){
+    /**
+     * Method used to update the key settings.
+     * The button associated with the action needs to be clicked to listen to the keyboard. When a key is pressed, the settings are updated in the game.
+     * The button text is updated to show the current setting to the player.
+     */
+    public void setKeys(){
         setOnKeyPressed( (event)->{
             if(!shootChange && !jumpChange){
                 event.consume();

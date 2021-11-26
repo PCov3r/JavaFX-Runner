@@ -72,8 +72,8 @@ public class GameScene extends Scene {
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
         this.cam = new Camera(camx, camy, camOffset, myhero);
-        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\parallax\\6.png");
-        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\parallax\\6.png");
+        backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
+        backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
         this.ennemies = new ArrayList<Foe>();
         Pause = new Rectangle(0,0,width,heigth);
         Pause.setFill(Color.GRAY);
@@ -208,7 +208,7 @@ public class GameScene extends Scene {
     public void createFoe(){
         while(numberOfFoes > 0) {
             if (ennemies.size()==0){
-                addFoe(new Foe(600 + myhero.getXcoor(), 250, 0, 0, 100_000_000, 6, 85, 100, 85));
+                addFoe(new Foe(800 + myhero.getXcoor(), 250, 0, 0, 100_000_000, 6, 85, 100, 85));
                 numberOfFoes--;
             } else {
                 double lastFoeX = ennemies.get(ennemies.size() - 1).getXcoor();
@@ -248,11 +248,11 @@ public class GameScene extends Scene {
     public void shoot(Pane p){
         if(projectiles.size()>0) {
             if (projectiles.get(projectiles.size() - 1).getXcoor() - myhero.getXcoor() > 100) {
-                addProjectile(new FireBall(myhero.getXcoor()+50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
+                addProjectile(new FireBall(myhero.getXcoor()+50, myhero.getYcoor() + 20 ));
                 myhero.addAmmo(-1); //On met à jour le nb de munitions
             }
         } else {
-            addProjectile(new FireBall(myhero.getXcoor() +50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
+            addProjectile(new FireBall(myhero.getXcoor() +50, myhero.getYcoor() + 20));
             myhero.addAmmo(-1);
         }
         if (myhero.getAttitude() == 0) {
@@ -363,7 +363,6 @@ public class GameScene extends Scene {
 
     private AnimationTimer timer = new AnimationTimer() {
         private long lastUpdate = 0 ;
-        private long lastfoeGen = 0;
 
         @Override
         public void handle(long now) {
@@ -375,15 +374,14 @@ public class GameScene extends Scene {
                 }
             }
 
-            if((now - lastfoeGen) >= (rnd.nextInt(4)+3)*1_000_000_000 && ennemies.size() == 0){
+            if(ennemies.size() == 0){
                 numberOfFoes = rnd.nextInt(5) + 2;
-                lastfoeGen = now;
                 createFoe();
             }
             if (now - lastUpdate >= 8_000_000) { //Sera éxécuté toutes les 8_000_000ns
                 if(myhero.getXcoor()>5000 && myhero.getXcoor()%5000 > 1 && myhero.getXcoor()%5000<20 && bonus == null){
                     double x = rnd.nextInt(400)+600;
-                    bonus = new Item(x + myhero.getXcoor(),300,20,20,cam,".\\img\\shootBonus.png");
+                    bonus = new Item(x + myhero.getXcoor(),300,0,0,20,20,".\\img\\shootBonus.png");
                     bonus.add(p);
                 }
 
