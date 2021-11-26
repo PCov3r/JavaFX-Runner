@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Random;
 
-//GameScene étend la classe Scene en lui rajoutant l'arrière-plan et les éléments mobiles tels que le héros ou les ennemis
+
 public class GameScene extends Scene {
     private Camera cam;
     private boolean paused;
@@ -53,6 +53,18 @@ public class GameScene extends Scene {
     private KeyCode jumpKey = KeyCode.SPACE;
     private KeyCode shootKey = KeyCode.ENTER;
 
+    /**
+     *
+     * @param ps
+     * @param p
+     * @param showHitBox
+     * @param width
+     * @param heigth
+     * @param b
+     * @param camx
+     * @param camy
+     * @param camOffset
+     */
     public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double heigth, boolean b, double camx, double camy, double camOffset) {
         super(p, width, heigth, b);
         this.primaryStage = ps;
@@ -75,10 +87,10 @@ public class GameScene extends Scene {
         score.setY(30);
         score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         score.setText("Distance: 0m");
-        Image spriteSheet = new Image(".\\img\\fireball.png",30, 30,true,false); //Chargement d'une nouvelle image
-        this.FireballIcon = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
-        this.FireballIcon.setViewport(new Rectangle2D(0,0,30,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
-        this.FireballIcon.setX(510); //Coordonnées de l'endroit où l'image doit être affichée
+        Image spriteSheet = new Image(".\\img\\fireball.png",30, 30,true,false);
+        this.FireballIcon = new ImageView(spriteSheet);
+        this.FireballIcon.setViewport(new Rectangle2D(0,0,30,30));
+        this.FireballIcon.setX(510);
         this.FireballIcon.setY(5);
 
         Button playBtn = new Button("Reprendre");
@@ -187,7 +199,7 @@ public class GameScene extends Scene {
     }
 
     public void destroyAllFoes(){
-        for(int i = 0; i<ennemies.size(); i++){ //Et aucun projectile n'est sur scène
+        for(int i = 0; i<ennemies.size(); i++){
             removeFoe(ennemies.get(i));
         }
         ennemies.clear();
@@ -234,18 +246,18 @@ public class GameScene extends Scene {
 
 
     public void shoot(Pane p){
-        if(projectiles.size()>0) { //Si ça n'est pas le 1e projectile...
-            if (projectiles.get(projectiles.size() - 1).getXcoor() - myhero.getXcoor() > 100) { //...afin d'éviter le spam de projectile on atteint que le précédent ait atteint un certain x
+        if(projectiles.size()>0) {
+            if (projectiles.get(projectiles.size() - 1).getXcoor() - myhero.getXcoor() > 100) {
                 addProjectile(new FireBall(myhero.getXcoor()+50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
                 myhero.addAmmo(-1); //On met à jour le nb de munitions
             }
-        } else { //Si c'est le premier projectile qu'on tire, on l'ajoute directement à la scène
+        } else {
             addProjectile(new FireBall(myhero.getXcoor() +50, myhero.getYcoor() + 20, 0, 0, 100, 0, 0, 100, 200));
             myhero.addAmmo(-1);
         }
-        if (myhero.getAttitude() == 0) { //On met le heros en attitude : tirer
+        if (myhero.getAttitude() == 0) {
             myhero.setAttitude(2);
-        } else if (myhero.getAttitude() == 1) { //Si il était en train de sauter, on le met en attitude : tirer et sauter
+        } else if (myhero.getAttitude() == 1) {
             myhero.setAttitude(3);
         }
 
@@ -258,11 +270,11 @@ public class GameScene extends Scene {
             if(fb.getXcoor()>myhero.getXcoor()+400){
                 removeProjectile(fb);
                 if(projectiles.size() == 0){
-                    if(myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
+                    if(myhero.getAttitude() == 3) {
                         myhero.setAttitude(1);
                     }else if(myhero.getAttitude() == 1){
                         myhero.setAttitude(1);
-                    } else { //Sinon on revient à l'animation du héros qui court
+                    } else {
                         myhero.setAttitude(0);
                     }
                 }
@@ -271,20 +283,20 @@ public class GameScene extends Scene {
         }
     }
 
-    public void addProjectile(FireBall fb){ //Ajout d'un projectile à notre liste et notre scène
+    public void addProjectile(FireBall fb){
         p.getChildren().add(fb.getImgview());
         projectiles.add(fb);
         fb.addHitBox(showHitBox, p, fb.getXcoor()-cam.getXcoor()+cam.getOffset(),fb.getYcoor()+15,60,30);
     }
 
-    public void removeProjectile(FireBall fb){ //Supression du projectile
+    public void removeProjectile(FireBall fb){
         projectiles.remove(fb);
         p.getChildren().remove(fb.getImgview());
         fb.deleteHitBox(p);
     }
 
     public void destroyAllProjectiles(){
-        for(int i = 0; i<projectiles.size(); i++){ //Et aucun projectile n'est sur scène
+        for(int i = 0; i<projectiles.size(); i++){
             removeProjectile(projectiles.get(i));
         }
         projectiles.clear();
@@ -297,9 +309,9 @@ public class GameScene extends Scene {
                 removeProjectile(fb);
                 p.getChildren().remove(fb.getImgview());
                 if (projectiles.size() == 0) {
-                    if (myhero.getAttitude() == 1 || myhero.getAttitude() == 3) { //Si le héros tirait en sautant, on revient au saut normal
+                    if (myhero.getAttitude() == 1 || myhero.getAttitude() == 3) {
                         myhero.setAttitude(1);
-                    } else { //Sinon on revient à l'animation du héros qui court
+                    } else {
                         myhero.setAttitude(0);
                     }
                 }
@@ -363,7 +375,7 @@ public class GameScene extends Scene {
                 }
             }
 
-            if((now - lastfoeGen) >= (rnd.nextInt(4)+3)*1_000_000_000 && ennemies.size() == 0){ //Ajout d'ennemis ttes les 4 à 7 sec
+            if((now - lastfoeGen) >= (rnd.nextInt(4)+3)*1_000_000_000 && ennemies.size() == 0){
                 numberOfFoes = rnd.nextInt(5) + 2;
                 lastfoeGen = now;
                 createFoe();

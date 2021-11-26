@@ -10,11 +10,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+
+import java.net.URL;
+import java.nio.file.Paths;
 
 
 public class MenuScene extends Scene {
@@ -29,6 +34,7 @@ public class MenuScene extends Scene {
     public MenuScene(Stage primaryStage, Pane p, double width, double height, boolean b) {
         super(p, width, height, b);
         this.p = p;
+
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 

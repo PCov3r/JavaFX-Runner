@@ -1,10 +1,15 @@
 package com.runner;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -22,6 +27,9 @@ public class OptionScene extends Scene {
     public OptionScene(Stage primaryStage, Pane p, double width, double height, boolean b) {
         super(p, width, height, b);
         this.p = p;
+
+        Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
+        ImageView background = new ImageView(back);
 
         returnBtn = new Button("Retour");
         returnBtn.setMinWidth(150);
@@ -44,7 +52,7 @@ public class OptionScene extends Scene {
         });
 
 
-        shootBtn = new Button("SPACE");
+        shootBtn = new Button("ENTER");
         shootBtn.setMinWidth(150);
         shootBtn.setStyle(IDLE_BUTTON_STYLE);
         shootBtn.setOnMouseEntered(e -> shootBtn.setStyle(HOVERED_BUTTON_STYLE));
@@ -56,15 +64,21 @@ public class OptionScene extends Scene {
 
         Text Jump = new Text("Jump");
         Text Shoot = new Text("Shoot");
-        Jump.setY(height/2);
-        Shoot.setY(height/2+40);
+        Jump.setFont(Font.font ("Impact", 30));
+        Shoot.setFont(Font.font ("Impact", 30));
+        Jump.setFill(Color.WHITESMOKE);
+        Shoot.setFill(Color.WHITESMOKE);
+        Jump.setStroke(Color.BLACK);
+        Shoot.setStroke(Color.BLACK);
 
-        VBox box = new VBox(20);
-        box.getChildren().addAll(jumpBtn, shootBtn);
-        box.setTranslateY(height/2-35);
+
+        VBox box = new VBox(5);
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().addAll(Jump,jumpBtn, Shoot,shootBtn);
+        box.setTranslateY(height/3);
         box.setTranslateX((width-150)/2);
 
-        p.getChildren().addAll(returnBtn,box, Jump, Shoot);
+        p.getChildren().addAll(background, returnBtn,box);
     }
 
     public void setScene(MenuScene menu, GameScene game){
@@ -99,13 +113,13 @@ public class OptionScene extends Scene {
                         if (jumpChange) {
                             String keyName = event.getCode().getName();
                             jumpBtn.setText(keyName);
-                            game.changeShootKey(event.getCode());
+                            game.changeJumpKey(event.getCode());
                             jumpChange = false;
                             enableBtn();
                         } else if (shootChange) {
                             String keyName = event.getCode().getName();
                             shootBtn.setText(keyName);
-                            game.changeJumpKey(event.getCode());
+                            game.changeShootKey(event.getCode());
                             shootChange = false;
                             enableBtn();
                         }
