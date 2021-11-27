@@ -9,16 +9,29 @@ import javafx.scene.paint.Color;
 
 
 public class Hero extends AnimatedThing {
-    private double numberOfLives; //Variable contenant le nombre de vie
-    private ImageView hearts; //Image associée au nombre de vie
-    private boolean isInvincible = false; //Variable d'invincibilité
-    private Integer numberofAmmo = 5; //Nombre de munitions du heros
+    private boolean isInvincible = false;
+    private double numberOfLives;
+    private ImageView hearts;
+    private Integer numberofAmmo = 5;
     private Lighting lighting = new Lighting();
     private boolean hasEffect = false;
     private long prevTime = 0;
 
-    public Hero(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offset, Integer height, Integer width) {
-        super(x, y, 0,attitude, frameidx, period, maxidx, offset, 0,0,height, width, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
+    /**
+     *
+     * @param x
+     * @param y
+     * @param attitude
+     * @param frameidx
+     * @param period
+     * @param maxidx
+     * @param offsetx
+     * @param offsety
+     * @param height
+     * @param width
+     */
+    public Hero(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offsetx, Integer offsety, Integer height, Integer width) {
+        super(x, y, 0,attitude, frameidx, period, maxidx, offsetx, offsety, 0,0,height, width, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
         numberOfLives = 3;
 
         lighting.setDiffuseConstant(1.0);

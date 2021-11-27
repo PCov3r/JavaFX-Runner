@@ -70,7 +70,7 @@ public class GameScene extends Scene {
         this.primaryStage = ps;
         this.p = p;
         this.showHitBox = showHitBox;
-        myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,100,85);
+        myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,120,100,85);
         this.cam = new Camera(camx, camy, camOffset, myhero);
         backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
         backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
@@ -130,7 +130,9 @@ public class GameScene extends Scene {
         box.setTranslateX((width-150)/2);
 
         p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon, Pause, box); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
-        myhero.addHitBox(showHitBox, p, myhero.getXcoor()-cam.getXcoor(),myhero.getYcoor(),75,100);
+        if(showHitBox) {
+            myhero.addHitBox(p, myhero.getXcoor() - cam.getXcoor(), myhero.getYcoor(), 75, 100);
+        }
     }
 
     public void setScene(LosingScene lose){
@@ -189,7 +191,9 @@ public class GameScene extends Scene {
     public void addFoe(Foe f){
         p.getChildren().add(f.getImgview());
         ennemies.add(f);
-        f.addHitBox(showHitBox, p, f.getXcoor()-cam.getXcoor(),f.getYcoor(),60,100);
+        if(showHitBox) {
+            f.addHitBox(p, f.getXcoor() - cam.getXcoor(), f.getYcoor(), 60, 100);
+        }
     }
 
     public void removeFoe(Foe f){
@@ -208,12 +212,12 @@ public class GameScene extends Scene {
     public void createFoe(){
         while(numberOfFoes > 0) {
             if (ennemies.size()==0){
-                addFoe(new Foe(800 + myhero.getXcoor(), 250, 0, 0, 100_000_000, 6, 85, 100, 85));
+                addFoe(new Foe(800 + myhero.getXcoor(), 250, 0, 0, 100_000_000, 6, 85, 120,100, 85));
                 numberOfFoes--;
             } else {
                 double lastFoeX = ennemies.get(ennemies.size() - 1).getXcoor();
                 Integer randomDistance = rnd.nextInt(400)+300;
-                addFoe(new Foe(lastFoeX+randomDistance, 250, 0, 0, 100_000_000, 6, 85, 100, 85));
+                addFoe(new Foe(lastFoeX+randomDistance, 250, 0, 0, 100_000_000, 6, 85,120, 100, 85));
                 numberOfFoes--;
             }
         }
@@ -286,7 +290,9 @@ public class GameScene extends Scene {
     public void addProjectile(FireBall fb){
         p.getChildren().add(fb.getImgview());
         projectiles.add(fb);
-        fb.addHitBox(showHitBox, p, fb.getXcoor()-cam.getXcoor()+cam.getOffset(),fb.getYcoor()+15,60,30);
+        if(showHitBox) {
+            fb.addHitBox(p, fb.getXcoor() - cam.getXcoor() + cam.getOffset(), fb.getYcoor() + 15, 60, 30);
+        }
     }
 
     public void removeProjectile(FireBall fb){
