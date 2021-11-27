@@ -6,7 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-
+/**
+ * A class that extends AnimatedThing.
+ * It uses the AnimatedThing methods to create a hero. The latter will move along the y and x axis.
+ * The hero also have a life count and a certain amount of ammo.
+ */
 public class Hero extends AnimatedThing {
     private boolean isInvincible = false;
     private double numberOfLives;
