@@ -70,7 +70,7 @@ public class GameScene extends Scene {
         this.primaryStage = ps;
         this.p = p;
         this.showHitBox = showHitBox;
-        myhero = new Hero(400, 250, 0, 0,100_000_000,6,85,120,100,85);
+        myhero = new Hero(400, 250);
         this.cam = new Camera(camx, camy, camOffset, myhero);
         backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
         backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
@@ -180,7 +180,7 @@ public class GameScene extends Scene {
 
     public void reset(){
         cam.reset();
-        myhero.reset(p);
+        myhero.reset();
         destroyAllProjectiles();
         destroyAllFoes();
         timer.start();
@@ -212,12 +212,12 @@ public class GameScene extends Scene {
     public void createFoe(){
         while(numberOfFoes > 0) {
             if (ennemies.size()==0){
-                addFoe(new Foe(800 + myhero.getXcoor(), 250, 0, 0, 100_000_000, 6, 85, 120,100, 85));
+                addFoe(new Foe(800 + myhero.getXcoor(), 250));
                 numberOfFoes--;
             } else {
                 double lastFoeX = ennemies.get(ennemies.size() - 1).getXcoor();
                 Integer randomDistance = rnd.nextInt(400)+300;
-                addFoe(new Foe(lastFoeX+randomDistance, 250, 0, 0, 100_000_000, 6, 85,120, 100, 85));
+                addFoe(new Foe(lastFoeX+randomDistance, 250));
                 numberOfFoes--;
             }
         }
@@ -241,7 +241,6 @@ public class GameScene extends Scene {
         if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(), myhero.getYcoor(), 75, 70).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
             f.die();
             if (myhero.getIsInvincible() == false) {
-                myhero.getImgview().setEffect(myhero.addEffect());
                 myhero.setNumberOfLives(-1);
                 myhero.setIsInvincible(true);
             }

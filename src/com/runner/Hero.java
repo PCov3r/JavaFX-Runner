@@ -4,7 +4,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 
@@ -18,20 +17,12 @@ public class Hero extends AnimatedThing {
     private long prevTime = 0;
 
     /**
-     *
-     * @param x
-     * @param y
-     * @param attitude
-     * @param frameidx
-     * @param period
-     * @param maxidx
-     * @param offsetx
-     * @param offsety
-     * @param height
-     * @param width
+     * The constructor creates an AnimatedThing with the parameters required to create a hero.
+     * @param x the x coordinate of the hero's origin
+     * @param y the y coordinate of the hero's origin
      */
-    public Hero(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offsetx, Integer offsety, Integer height, Integer width) {
-        super(x, y, 0,attitude, frameidx, period, maxidx, offsetx, offsety, 0,0,height, width, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
+    public Hero(double x, double y) {
+        super(x, y, 0,0, 0,100_000_000,6,85,120,0,0,100,85, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
         numberOfLives = 3;
 
         lighting.setDiffuseConstant(1.0);
@@ -47,23 +38,99 @@ public class Hero extends AnimatedThing {
         this.hearts.setY(10);
     }
 
-    public void reset(Pane p){ //Reset de toutes les propriétés pour redémarrer le jeu
+    /**
+     * Method to reset our hero in order to reload the game.
+     * It takes the hero back to the beginning of the run, give it all his lives back and take back all his bonuses.
+     */
+    public void reset(){
         setXcoor(0);
+        setYcoor(250);
         numberOfLives = 3;
         this.hearts.setVisible(true);
-        numberofAmmo = 0; //0 munitions
+        numberofAmmo = 0;
 
     }
 
+    /**
+     * To prevent our hero to take damage after damage, we add a IsInvincible boolean.
+     * When our hero is hit, we set this boolean to true and we prevent the hero from taking damage as long as it stays true.
+     * @return wether the hero is invincible or not
+     */
+    public boolean getIsInvincible(){
+        return isInvincible;
+    }
+
+    /**
+     *
+     * @param state the hero's new state of invincibility
+     */
+    public void setIsInvincible(boolean state){
+        isInvincible = state;
+    }
+
+    /**
+     * Method used to get the lives' ImageView of the hero in order to add it to the scene.
+     * @return the hero's lives imageView
+     */
     public ImageView getImgHearts() {
         return hearts;
-    } //Retourne l'imageview des coeurs afin de mettre à jour leur nombre en utilisant render() de GameScene
-
-    public Lighting addEffect(){
-        hasEffect = true;
-        return lighting;
     }
 
+    /**
+     * Change the hero's count of life.
+     * If the value is negative (ie the hero has been hit), we update the hero visual effect to make it appear red.
+     * @param val the value to be added to the hero's count of life
+     */
+    public void setNumberOfLives(Integer val){
+        if(val < 0){
+            hasEffect = true;
+            getImgview().setEffect(lighting);
+        }
+        numberOfLives = numberOfLives + val;
+    }
+
+    /**
+     *
+     * @return the hero's life count
+     */
+    public double getNumberOfLives(){
+        return numberOfLives;
+    }
+
+    /**
+     * Update the hearts' visual accordingly to the life count of the hero.
+     */
+    public void updateLives(){
+        if(numberOfLives>0) {
+            this.hearts.setViewport(new Rectangle2D(0, 0, 38 * numberOfLives, 46));
+        } else {
+            this.hearts.setVisible(false);
+        }
+    }
+
+    /**
+     * Prevent the hero from shooting indefinitely by giving it a number of ammo.
+     * @return the hero's ammo number
+     */
+    public Integer getAmmo(){
+        return numberofAmmo;
+    }
+
+    /**
+     * Add ammo to the hero (for example when he gets a bonus).
+     * @param num the number of ammunition to add
+     */
+    public void addAmmo(Integer num){
+        numberofAmmo += num;
+    }
+
+    /**
+     * Method to update all properties of the hero.
+     * We update its movement and animation using the super method. If the hero has a "hit" effect we check if a certain amount of time has passed before clearing it.
+     * Finally, we update the hero life count visual.
+     * @param now the current timer timestamp, used to switch between frame
+     * @param step the step of the movement along the x-axis
+     */
     @Override
     public void update(long now, int step) {
         super.update(now, step);
@@ -79,37 +146,5 @@ public class Hero extends AnimatedThing {
         }
         updateLives();
 
-    }
-
-    public double getNumberOfLives(){
-        return numberOfLives;
-    }
-
-    public Integer getAmmo(){
-        return numberofAmmo;
-    }
-
-    public void addAmmo(Integer num){
-        numberofAmmo += num;
-    }
-
-    public void setNumberOfLives(Integer val){
-        numberOfLives = numberOfLives + val;
-    }
-
-    public boolean getIsInvincible(){
-        return isInvincible;
-    }
-
-    public void setIsInvincible(boolean state){
-        isInvincible = state;
-    }
-
-    public void updateLives(){
-        if(numberOfLives>0) {
-            this.hearts.setViewport(new Rectangle2D(0, 0, 38 * numberOfLives, 46));
-        } else {
-            this.hearts.setVisible(false);
-        }
     }
 }

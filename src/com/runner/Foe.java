@@ -8,20 +8,12 @@ public class Foe extends AnimatedThing{
     private boolean isAlive ;
 
     /**
-     * The constructor creates an AnimatedThing but it already has the parameters required to create an enemy.
-     * @param x the x coordinate origin of our hero
-     * @param y the y coordinate origin of our hero
-     * @param attitude the attitude of our hero
-     * @param frameidx the current frame index
-     * @param period the time period between two frame, in ns
-     * @param maxidx the maximum index of an animation
-     * @param offsetx the offset between two frames along the x axis
-     * @param offsety the offset between two frames along the y axis
-     * @param height the height of a frame
-     * @param width the width of a frame
+     * The constructor creates an AnimatedThing with the parameters required to create an enemy.
+     * @param x the x coordinate of our enemy's origin
+     * @param y the y coordinate of our enemy's origin
      */
-    public Foe(double x, double y, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offsetx, Integer offsety, Integer height, Integer width) {
-        super(x, y, 0,attitude, frameidx, period, maxidx, offsetx, offsety, 0,0,height, width, ".\\img\\enemy.png");
+    public Foe(double x, double y) {
+        super(x, y, 0,0, 0, 100_000_000, 6, 85, 120, 0,0,100, 85, ".\\img\\enemy.png");
         getImgview().setScaleX(-1);
         isAlive = true;
     }

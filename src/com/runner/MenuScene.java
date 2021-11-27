@@ -43,7 +43,7 @@ public class MenuScene extends Scene {
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
-        myhero = new Hero(300, 100, 0, 0,100_000_000,6,85, 120,100,85);
+        myhero = new Hero(300, 100);
         myhero.getImgview().setPreserveRatio(true);
         myhero.getImgview().setFitHeight(250);
 
