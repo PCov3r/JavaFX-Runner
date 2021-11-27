@@ -5,7 +5,7 @@
 Notre héros devra faire face à bien des dangers pour arriver victorieux. 
 Armez-vous de courage et plongez dans cette aventure !
 
-## 🧾 Description des différentes classes 
+## [🧾 Description des différentes classes](/src/com/runner/)
 ### Main
 
 Tout simplement le corps du jeu. Classe où on retrouve tout les différents écrans du jeu et qui permet de lancer le jeu.
