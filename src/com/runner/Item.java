@@ -69,20 +69,4 @@ public class Item{
         return imgview;
     }
 
-    /**
-     * Method used to add a bonus to pane, in order to make it visible
-     * @param p the pane to which the bonus is added
-     */
-    public void add(Pane p){
-        p.getChildren().add(imgview);
-    }
-
-    /**
-     * Method used to remove a bonus to pane, in order to make it unvisible
-     * @param p the pane from which the bonus is removed
-     */
-    public void remove(Pane p){
-        p.getChildren().remove(imgview);
-    }
-
 }
