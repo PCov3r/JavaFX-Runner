@@ -13,7 +13,7 @@ public class Foe extends AnimatedThing{
      * @param y the y coordinate of our enemy's origin
      */
     public Foe(double x, double y) {
-        super(x, y, 0,0, 0, 100_000_000, 6, 85, 120, 0,0,100, 85, ".\\img\\enemy.png");
+        super(x, y, 0,0, 0, 100_000_000, 6, 85, 120, 0,0,100, 85, ".\\img\\darklink.png");
         getImgview().setScaleX(-1);
         isAlive = true;
     }

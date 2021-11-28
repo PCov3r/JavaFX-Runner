@@ -31,6 +31,7 @@ public class GameScene extends Scene {
     private Text ammo = new Text();
     private KeyCode jumpKey = KeyCode.SPACE;
     private KeyCode shootKey = KeyCode.ENTER;
+    private MusicPlayer player;
 
     private staticThing backgroundRight;
     private staticThing backgroundLeft;
@@ -63,6 +64,7 @@ public class GameScene extends Scene {
         this.primaryStage = ps;
         this.p = p;
         this.pauseScreen = new PauseScreen(p, primaryStage, width, heigth, timer);
+        this.player = new MusicPlayer("src\\music\\gerudo_valley.mp3",0,175);
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250);
         this.cam = new Camera(camx, camy, camOffset, myhero);
@@ -105,6 +107,7 @@ public class GameScene extends Scene {
      * It resets all the GameScene assets and remove all the previously created enemies and fireballs.
      */
     public void reset(){
+        player.startMusic();
         cam.reset();
         myhero.reset();
         destroyAllProjectiles();
@@ -209,7 +212,7 @@ public class GameScene extends Scene {
      * @param f the enemy on which to check for collision
      */
     public void checkCollisionHeroFoe(Foe f) {
-        if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(), myhero.getYcoor(), 75, 70).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
+        if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(), myhero.getYcoor(), 75, 70).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 70, 70))) {
             f.die();
             if (myhero.getIsInvincible() == false) {
                 myhero.setNumberOfLives(-1);
@@ -245,7 +248,7 @@ public class GameScene extends Scene {
         p.getChildren().add(fb.getImgview());
         projectiles.add(fb);
         if(showHitBox) {
-            fb.addHitBox(p, fb.getXcoor() - cam.getXcoor() + cam.getOffset(), fb.getYcoor() + 15, 60, 30);
+            fb.addHitBox(p, fb.getXcoor() - cam.getXcoor() + cam.getOffset(), fb.getYcoor() + 15, 65, 30);
         }
     }
 
@@ -300,7 +303,7 @@ public class GameScene extends Scene {
      */
     public void checkCollisionFireballFoe(Foe f, FireBall fb) {
         if (fb != null) {
-            if (fb.getHitBox(fb.getXcoor()-cam.getXcoor()+cam.getOffset(), fb.getYcoor()+15, 30, 30).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
+            if (fb.getHitBox(fb.getXcoor()-cam.getXcoor()+cam.getOffset(), fb.getYcoor()+15, 65, 30).intersects(f.getHitBox(f.getXcoor()-cam.getXcoor(), f.getYcoor(), 50, 70))) {
                 f.die();
                 removeProjectile(fb);
                 p.getChildren().remove(fb.getImgview());
@@ -450,6 +453,7 @@ public class GameScene extends Scene {
                     loseScreen.showScore(distance);
                     primaryStage.setScene(loseScreen);
                     timer.stop();
+                    player.stopMusic();
                 }
 
                 render();
@@ -464,6 +468,7 @@ public class GameScene extends Scene {
      * Method to start the game, by launching the animation timer and listening to keyboard inputs.
      */
     public void Start() {
+        player.startMusic();
         listenKeys();
         timer.start();
     }

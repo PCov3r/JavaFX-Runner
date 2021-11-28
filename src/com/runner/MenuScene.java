@@ -10,11 +10,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+import java.io.File;
+import javafx.util.Duration;
 
 /**
  * MenuScene extends the Scene class by adding all the elements required to get a (almost) beautiful menu : buttons to switch between scenes and our running hero.
@@ -23,8 +27,9 @@ public class MenuScene extends Scene {
     private GameScene game;
     private OptionScene options;
     private Pane p;
+    private MusicPlayer player;
 
-    private Hero myhero;
+    private AnimatedThing myhero;
     private VBox box;
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
@@ -40,12 +45,15 @@ public class MenuScene extends Scene {
         super(p, width, height);
         this.p = p;
 
+        player = new MusicPlayer("src\\music\\zelda_theme.mp3",2,171);
+        player.startMusic();
+
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
-        myhero = new Hero(300, 100);
+        myhero = new AnimatedThing(300,100,0, 0, 0, 150_000_000, 23, 50, 0, 0, 0, 100, 50, ".\\img\\ocarina.png");
         myhero.getImgview().setPreserveRatio(true);
-        myhero.getImgview().setFitHeight(250);
+        myhero.getImgview().setFitHeight(350);
 
         Text title = new Text(50,90,"JavaFX Runner");
         title.setFill(Color.SNOW);
@@ -67,6 +75,7 @@ public class MenuScene extends Scene {
             primaryStage.setScene(game);
             game.Start();
             timerAnim.stop();
+            player.stopMusic();
         });
 
         Rectangle backBox2 = new Rectangle(150, 50);

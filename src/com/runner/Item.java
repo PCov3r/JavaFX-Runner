@@ -3,7 +3,6 @@ package com.runner;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 /**
  * This class implements collectible item for our hero (projectiles bonus).
