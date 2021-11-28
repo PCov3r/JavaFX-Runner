@@ -12,9 +12,10 @@ import javafx.scene.layout.Pane;
 public class Item{
     private double x, y;
     private ImageView imgview;
+    private boolean isVisible;
 
     /**
-     * The constructor allow to change the bonus design (as long as the hitbox is set accordingly).
+     * The constructor allows to change the bonus design (as long as the hitbox is set accordingly).
      * @param xcoor the x coordinates of the bonus position
      * @param ycoor the y coordinates of the bonus position
      * @param viewx the x coordinate of the image part to show
@@ -31,6 +32,7 @@ public class Item{
         this.imgview.setY(ycoor);
         this.x = xcoor;
         this.y = ycoor;
+        this.isVisible = true;
     }
 
     /**
@@ -67,6 +69,23 @@ public class Item{
      */
     public ImageView getImgview() {
         return imgview;
+    }
+
+    /**
+     * In order to remove the bonus when consumed by the player, we use a boolean variable : isVisible.
+     * This method updates the bonus' status.
+     * @param visible the new bonus' status
+     */
+    public void setVisible(boolean visible){
+        this.isVisible = visible;
+    }
+
+    /**
+     * To update the bonus in the game we need to have access to its status.
+     * @return the current bonus' status
+     */
+    public boolean getVisible(){
+        return isVisible;
     }
 
 }

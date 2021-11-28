@@ -66,6 +66,7 @@ public class GameScene extends Scene {
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250);
         this.cam = new Camera(camx, camy, camOffset, myhero);
+
         backgroundRight = new staticThing(0, 0, 800, 400, cam,".\\img\\desert.png");
         backgroundLeft = new staticThing(0, 0, 800, 400, cam, ".\\img\\desert.png");
 
@@ -339,7 +340,7 @@ public class GameScene extends Scene {
      * Add a bonus to the screen. A bonus is an item that gives the player more ammo.
      */
     public void addBonus(){
-        double x = rnd.nextInt(1000);
+        double x = rnd.nextInt(1000)+400;
         bonus = new Item(x + myhero.getXcoor(),300,0,0,20,20,".\\img\\shootBonus.png");
         p.getChildren().add(bonus.getImgview());
     }
@@ -360,17 +361,17 @@ public class GameScene extends Scene {
     public void checkCollisionHeroBonus() {
            if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(),myhero.getYcoor(),30, 70).intersects(bonus.getHitBox(bonus.getXcoor()-cam.getXcoor(),bonus.getYcoor(),20, 20))) {
                myhero.addAmmo(+5);
-               removeBonus();
+               bonus.setVisible(false);
            }
     }
 
     /**
-     * Update the bonus by checking for collision with the hero and removing it when out of sight.
+     * Update the bonus by checking for collision with the hero and removing it when out of sight or consumed.
      */
     public void updateBonus(){
         if(bonus != null) {
             checkCollisionHeroBonus();
-            if (bonus.getImgview().getX() < -100) {
+            if (bonus.getVisible() == false || bonus.getImgview().getX() < -100) {
                 removeBonus();
             }
         }
