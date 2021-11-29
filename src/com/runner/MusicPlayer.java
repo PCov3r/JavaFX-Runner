@@ -23,21 +23,34 @@ public class MusicPlayer {
         player = new MediaPlayer( new Media(uriString));
         player.setStartTime(Duration.seconds(beginTime));
         player.setStopTime(Duration.seconds(endTime));
-        player.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     /**
-     * Start the music player
+     * Start the music player.
      */
     public void startMusic(){
         player.play();
     }
 
     /**
-     * Stop the music player
+     * Stop the music player.
      */
     public void stopMusic(){
         player.stop();
+    }
+
+    /**
+     * Play the audio indefinitely.
+     */
+    public void repeatIndefinitely(){
+        player.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    /**
+     * Play the audio a certain number of times.
+     */
+    public void setRepeat(int count){
+        player.setCycleCount(count);
     }
 
 

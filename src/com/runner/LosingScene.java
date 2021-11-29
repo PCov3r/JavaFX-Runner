@@ -17,10 +17,11 @@ import javafx.stage.Stage;
  * A Scene extension used as an ending scene. It will be used to display the player's score as well as the possibility to play again or exit the game.
  */
 public class LosingScene extends Scene {
-    GameScene gameScene;
+    private GameScene gameScene;
     private Pane p;
+    private MusicPlayer player;
 
-    Text scoreTxt;
+    private Text scoreTxt;
     private VBox box;
     final String IDLE_BUTTON_STYLE = " -fx-font-size:20px; -fx-background-color: #525252; -fx-border-color: #000000; -fx-text-fill: #ffffff ";
     final String HOVERED_BUTTON_STYLE = "-fx-font-size:20px; -fx-background-color: #ffffffff; -fx-border-color: #000000; -fx-text-fill: #000000";
@@ -38,6 +39,8 @@ public class LosingScene extends Scene {
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
+        player = new MusicPlayer("src\\music\\game_over.mp3",0,10);
+        player.setRepeat(1);
 
         Text title = new Text(50,90,"Votre course s'arrête ici");
         title.setFill(Color.SNOW);
@@ -97,4 +100,9 @@ public class LosingScene extends Scene {
     public void setScene(GameScene gms){
         this.gameScene = gms;
     }
+
+    public void start(){
+        player.startMusic();
+    }
+
 }

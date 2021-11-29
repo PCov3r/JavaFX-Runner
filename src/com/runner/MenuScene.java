@@ -46,6 +46,7 @@ public class MenuScene extends Scene {
         this.p = p;
 
         player = new MusicPlayer("src\\music\\zelda_theme.mp3",2,171);
+        player.repeatIndefinitely();
         player.startMusic();
 
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);

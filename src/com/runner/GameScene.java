@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -54,17 +55,18 @@ public class GameScene extends Scene {
      * @param p the pane to which the element will be added
      * @param showHitBox a boolean that allows to show hitboxes for debugging purposes
      * @param width the width of the scene
-     * @param heigth the height of the scene
+     * @param height the height of the scene
      * @param camx the camera initial position along the x axis
      * @param camy the camera initial position along the y axis
      * @param camOffset the offset between the camera and the hero
      */
-    public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double heigth, double camx, double camy, double camOffset) {
-        super(p, width, heigth);
+    public GameScene(Stage ps, Pane p, boolean showHitBox, double width, double height, double camx, double camy, double camOffset) {
+        super(p, width, height);
         this.primaryStage = ps;
         this.p = p;
-        this.pauseScreen = new PauseScreen(p, primaryStage, width, heigth, timer);
+        this.pauseScreen = new PauseScreen(p, primaryStage, width, height, timer);
         this.player = new MusicPlayer("src\\music\\gerudo_valley.mp3",0,175);
+        player.repeatIndefinitely();
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250);
         this.cam = new Camera(camx, camy, camOffset, myhero);
@@ -452,6 +454,7 @@ public class GameScene extends Scene {
                 if(myhero.getNumberOfLives() == 0){
                     loseScreen.showScore(distance);
                     primaryStage.setScene(loseScreen);
+                    loseScreen.start();
                     timer.stop();
                     player.stopMusic();
                 }
