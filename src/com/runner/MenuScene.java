@@ -10,15 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
-import java.io.File;
-import javafx.util.Duration;
 
 /**
  * MenuScene extends the Scene class by adding all the elements required to get a (almost) beautiful menu : buttons to switch between scenes and our running hero.
@@ -26,7 +22,6 @@ import javafx.util.Duration;
 public class MenuScene extends Scene {
     private GameScene game;
     private OptionScene options;
-    private Pane p;
     private MusicPlayer player;
 
     private AnimatedThing myhero;
@@ -43,7 +38,6 @@ public class MenuScene extends Scene {
      */
     public MenuScene(Stage primaryStage, Pane p, double width, double height) {
         super(p, width, height);
-        this.p = p;
 
         player = new MusicPlayer("src\\music\\zelda_theme.mp3",2,171);
         player.repeatIndefinitely();
@@ -52,14 +46,16 @@ public class MenuScene extends Scene {
         Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
         ImageView background = new ImageView(back);
 
-        myhero = new AnimatedThing(300,100,0, 0, 0, 150_000_000, 23, 50, 0, 0, 0, 100, 50, ".\\img\\ocarina.png");
+        myhero = new AnimatedThing(300,100,0, 0, 0, 0, 150_000_000, 23, 50, 0, 0, 0, 100, 50, ".\\img\\ocarina.png");
         myhero.getImgview().setPreserveRatio(true);
         myhero.getImgview().setFitHeight(350);
 
-        Text title = new Text(50,90,"JavaFX Runner");
+        Text title = new Text(30,90,"A RUNNER TO THE PAST");
         title.setFill(Color.SNOW);
         title.setStroke(Color.BLACK);
-        title.setFont(Font.font ("Impact", 60));
+        Font titleFont = Font.loadFont("file:src//fonts//hyrule_font.ttf", 60);
+        title.setFont(titleFont);
+
 
         Rectangle backBox1 = new Rectangle(150, 50);
         backBox1.setFill(Color.WHITESMOKE);

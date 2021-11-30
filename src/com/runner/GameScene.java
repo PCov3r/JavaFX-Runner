@@ -94,7 +94,7 @@ public class GameScene extends Scene {
 
 
 
-        p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon); //On ajoute l'arrière plan statique ie 2 images collées l'une après l'autre
+        p.getChildren().addAll(backgroundRight.getImgview(),backgroundLeft.getImgview(), myhero.getImgview(), myhero.getImgHearts(),ammo, score, FireballIcon);
         if(showHitBox) {
             myhero.addHitBox(p, myhero.getXcoor() - cam.getXcoor(), myhero.getYcoor(), 75, 100);
         }
@@ -352,7 +352,7 @@ public class GameScene extends Scene {
      */
     public void addBonus(){
         double x = rnd.nextInt(1000)+400;
-        bonus = new Item(x + myhero.getXcoor(),300,0,0,20,20,".\\img\\shootBonus.png");
+        bonus = new Item(x + myhero.getXcoor(),300,0,0,40,40,".\\img\\shootBonus.png");
         p.getChildren().add(bonus.getImgview());
     }
 
@@ -370,7 +370,7 @@ public class GameScene extends Scene {
      * If the hitboxes intersect, bonus is removed and the player gets more ammo.
      */
     public void checkCollisionHeroBonus() {
-           if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(),myhero.getYcoor(),30, 70).intersects(bonus.getHitBox(bonus.getXcoor()-cam.getXcoor(),bonus.getYcoor(),20, 20))) {
+           if (myhero.getHitBox(myhero.getXcoor()-cam.getXcoor()+cam.getOffset(),myhero.getYcoor(),30, 70).intersects(bonus.getHitBox(bonus.getXcoor()-cam.getXcoor(),bonus.getYcoor(),40, 40))) {
                myhero.addAmmo(+5);
                bonus.setVisible(false);
            }
@@ -447,7 +447,7 @@ public class GameScene extends Scene {
                 createFoe();
             }
             if(myhero.getXcoor()>15000 && myhero.getXcoor()%15000 > 1 && myhero.getXcoor()%15000<20 && bonus == null){
-                addBonus();;
+                addBonus();
             }
             if (now - lastUpdate >= 8_000_000) {
 

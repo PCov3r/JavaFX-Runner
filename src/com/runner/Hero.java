@@ -15,7 +15,7 @@ public class Hero extends AnimatedThing {
     private boolean isInvincible = false;
     private double numberOfLives;
     private ImageView hearts;
-    private Integer numberofAmmo = 5;
+    private Integer numberofAmmo = 0;
     private Lighting lighting = new Lighting();
     private boolean hasEffect = false;
     private long prevTime = 0;
@@ -26,7 +26,7 @@ public class Hero extends AnimatedThing {
      * @param y the y coordinate of the hero's origin
      */
     public Hero(double x, double y) {
-        super(x, y, 0,0, 0,100_000_000,6,85,120,0,0,100,85, ".\\img\\heros.png"); //Appel du super constructeur pour afficher notre heros
+        super(x, y, 0, 0,0, 0,100_000_000,6,85,120,0,0,100,85, ".\\img\\heros.png");
         numberOfLives = 3;
 
         lighting.setDiffuseConstant(1.0);
@@ -35,10 +35,10 @@ public class Hero extends AnimatedThing {
         lighting.setSurfaceScale(0.0);
         lighting.setLight(new Light.Distant(45, 45, Color.RED));
 
-        Image spriteSheet = new Image(".\\img\\hearts.png",114, 30,true,false); //Chargement d'une nouvelle image, ici la vie du héros
-        this.hearts = new ImageView(spriteSheet); //Que l'on associe à un objet ImageView pour pouvoir l'afficher dans notre fenêtre
-        this.hearts.setViewport(new Rectangle2D(0,0,114,30)); //Définition du viewport, c'est à dire de la zone à afficher issue de notre image
-        this.hearts.setX(10); //Coordonnées de l'endroit où l'image doit être affichée
+        Image spriteSheet = new Image(".\\img\\hearts.png",114, 30,true,false);
+        this.hearts = new ImageView(spriteSheet);
+        this.hearts.setViewport(new Rectangle2D(0,0,114,30));
+        this.hearts.setX(10);
         this.hearts.setY(10);
     }
 
@@ -47,7 +47,8 @@ public class Hero extends AnimatedThing {
      * It takes the hero back to the beginning of the run, give it all his lives back and take back all his bonuses.
      */
     public void reset(){
-        setXcoor(0);
+        setYspeed(0);
+        setXcoor(400);
         setYcoor(250);
         numberOfLives = 3;
         this.hearts.setVisible(true);

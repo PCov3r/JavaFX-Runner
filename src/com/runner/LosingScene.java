@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -11,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -36,16 +39,24 @@ public class LosingScene extends Scene {
     public LosingScene(Stage primaryStage, Pane p, double width, double height) {
         super(p, width, height);
         this.p = p;
-        Image back = new Image(".\\img\\menuback.jpg",width, height,false,true);
-        ImageView background = new ImageView(back);
+        p.setStyle("-fx-background-color: black");
+
+        Image dead_hero = new Image(".\\img\\dead_link.png",80, 80,false,true);
+        ImageView link = new ImageView(dead_hero);
+        link.setPreserveRatio(true);
+        link.setFitHeight(250);
+        link.setY(30);
+        link.setX(195);
 
         player = new MusicPlayer("src\\music\\game_over.mp3",0,10);
         player.setRepeat(1);
 
-        Text title = new Text(50,90,"Votre course s'arrête ici");
-        title.setFill(Color.SNOW);
-        title.setStroke(Color.BLACK);
-        title.setFont(Font.font ("Impact", 40));
+        Text title = new Text(215,90,"GAME OVER");
+        title.setFill(Color.RED);
+        Font titleFont = Font.loadFont("file:src//fonts//hyrule_font.ttf", 45);
+        title.setFont(titleFont);
+        Effect glow = new Glow(1.0);
+        title.setEffect(glow);
 
         Button reloadBtn = new Button("Rejouer");
         reloadBtn.setMinWidth(150);
@@ -73,17 +84,21 @@ public class LosingScene extends Scene {
             }
         });
 
+        Font btnFont = Font.loadFont("file:src//fonts//minishcap.ttf", 45);
+        quitBtn.setFont(btnFont);
+        reloadBtn.setFont(btnFont);
+
         box = new VBox(5);
-        box.setTranslateX(70);
-        box.setTranslateY(170);
+        box.setTranslateX(240);
+        box.setTranslateY(260);
         box.getChildren().addAll(reloadBtn, quitBtn);
 
-        scoreTxt = new Text(350,250,"");
+        scoreTxt = new Text(255,240,"0m");
         scoreTxt.setFill(Color.SNOW);
         scoreTxt.setStroke(Color.BLACK);
-        scoreTxt.setFont(Font.font ("Helvetica", 80));
+        scoreTxt.setFont(Font.font ("Helvetica", 60));
 
-        p.getChildren().addAll( background, title, box, scoreTxt);
+        p.getChildren().addAll( link, title, box, scoreTxt);
     }
 
     /**

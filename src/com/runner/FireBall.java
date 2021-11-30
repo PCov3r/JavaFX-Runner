@@ -14,7 +14,7 @@ public class FireBall extends AnimatedThing{
      * @param y the y coordinate of the fireball
      */
     public FireBall(double x, double y) {
-        super(x, y, 0,0, 0, 100, 0, 0, 0, 510, 265, 100, 200, ".\\img\\heros.png");
+        super(x, y, 0, 0,0, 0, 100, 0, 0, 0, 510, 265, 100, 200, ".\\img\\heros.png");
         this.x = x;
         this.y = y;
     }

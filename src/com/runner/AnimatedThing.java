@@ -38,10 +38,11 @@ public class AnimatedThing {
      * @param width the width of a frame
      * @param thingPath the spritesheet's path
      */
-    public AnimatedThing(double x, double y,double vx, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offsetx, Integer offsety, Integer viewx, Integer viewy, Integer height, Integer width, String thingPath) {
+    public AnimatedThing(double x, double y,double vx, double vy, Integer attitude, Integer frameidx, Integer period, Integer maxidx, Integer offsetx, Integer offsety, Integer viewx, Integer viewy, Integer height, Integer width, String thingPath) {
         this.x = x;
         this.y = y;
         this.vx = vx;
+        this.vy = vy;
         this.attitude = attitude;
         this.frameidx = frameidx;
         this.period = period;
@@ -120,6 +121,14 @@ public class AnimatedThing {
      */
     public void setYcoor(double coor) {
         this.y = coor;
+    }
+
+    /**
+     * Set the AnimatedThing speed along the y axis.
+     * @param speed the new speed along y axis of our object
+     */
+    public void setYspeed(double speed) {
+        this.vy = speed;
     }
 
     /**
