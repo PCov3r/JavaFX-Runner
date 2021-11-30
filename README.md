@@ -2,8 +2,8 @@
 
 ## 👨‍💻 Bienvenue dans le monde merveilleux de Java
 
-Notre héros devra faire face à bien des dangers pour arriver victorieux. 
-Armez-vous de courage et plongez dans cette aventure !
+Notre valeureux Link se retrouve assailli par sa version maléfique: Dark Link.
+Survivez le plus longtemps possible, en parcourant les terres de la Vallée Gerudo (en tout cas ce qui s'en rapproche).
 
 ## [🧾 Description des différentes classes](/src/com/runner/)
 ### Main
