@@ -1,6 +1,7 @@
 package com.runner;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.SequentialTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -33,6 +34,7 @@ public class GameScene extends Scene {
     private KeyCode jumpKey = KeyCode.SPACE;
     private KeyCode shootKey = KeyCode.ENTER;
     private MusicPlayer player;
+    private FadingRectangle fadeRect;
 
     private staticThing backgroundRight;
     private staticThing backgroundLeft;
@@ -67,6 +69,8 @@ public class GameScene extends Scene {
         this.pauseScreen = new PauseScreen(p, primaryStage, width, height, timer);
         this.player = new MusicPlayer("src\\music\\gerudo_valley.mp3",0,175);
         player.repeatIndefinitely();
+        fadeRect = new FadingRectangle(ps, p,0,0,width,height,Color.BLACK, 2000, 1);
+
         this.showHitBox = showHitBox;
         myhero = new Hero(400, 250);
         this.cam = new Camera(camx, camy, camOffset, myhero);
@@ -97,11 +101,12 @@ public class GameScene extends Scene {
     }
 
     /**
-     * Method to link the GameScene to the ending scene
+     * Method to link the GameScene to the ending scene, using a fade transition.
      * @param lose the LosingScene to show when the player dies
      */
     public void setScene(LosingScene lose){
         this.loseScreen = lose;
+        this.fadeRect.setAfter(this.loseScreen);
     }
 
     /**
@@ -109,6 +114,7 @@ public class GameScene extends Scene {
      * It resets all the GameScene assets and remove all the previously created enemies and fireballs.
      */
     public void reset(){
+        fadeRect.reset();
         player.startMusic();
         cam.reset();
         myhero.reset();
@@ -452,9 +458,8 @@ public class GameScene extends Scene {
                 cam.update();
 
                 if(myhero.getNumberOfLives() == 0){
-                    loseScreen.showScore(distance);
-                    primaryStage.setScene(loseScreen);
-                    loseScreen.start();
+                    fadeRect.play();
+                    loseScreen.start(distance);
                     timer.stop();
                     player.stopMusic();
                 }

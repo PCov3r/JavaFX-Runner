@@ -91,6 +91,7 @@ public class Hero extends AnimatedThing {
             getImgview().setEffect(lighting);
         }
         numberOfLives = numberOfLives + val;
+        updateLives();
     }
 
     /**
@@ -149,6 +150,5 @@ public class Hero extends AnimatedThing {
             prevTime = now;
         }
         updateLives();
-
     }
 }

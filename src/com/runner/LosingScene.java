@@ -53,6 +53,7 @@ public class LosingScene extends Scene {
         reloadBtn.setOnMouseEntered(e -> reloadBtn.setStyle(HOVERED_BUTTON_STYLE));
         reloadBtn.setOnMouseExited(e -> reloadBtn.setStyle(IDLE_BUTTON_STYLE));
         reloadBtn.setOnAction(e -> {
+            player.stopMusic();
             gameScene.reset();
             primaryStage.setScene(gameScene);
         });
@@ -101,7 +102,11 @@ public class LosingScene extends Scene {
         this.gameScene = gms;
     }
 
-    public void start(){
+    /**
+     * Start the scene, ie play the "game over" music and update the score.
+     */
+    public void start(int score){
+        showScore(score);
         player.startMusic();
     }
 
