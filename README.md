@@ -3,7 +3,13 @@
 ## 👨‍💻 Bienvenue dans le monde merveilleux de Java
 
 Notre valeureux Link se retrouve assailli par sa version maléfique: Dark Link.
+
 Survivez le plus longtemps possible, en parcourant les terres de la Vallée Gerudo (en tout cas ce qui s'en rapproche).
+
+
+⚠️ Afin que la MV puisse jouer les musiques, il faut mettre à jour sa configuration avec : --add-modules=javafx.controls,javafx.media ⚠️
+
+<br>
 
 ## [🧾 Description des différentes classes](/src/com/runner/)
 ### Main
