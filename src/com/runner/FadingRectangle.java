@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * A class to add fading between screen as a transition.
+ * A class to add fading transition between scenes.
+ * Draws a rectangle that fades in/out.
  */
 public class FadingRectangle {
     private Stage primaryStage;
